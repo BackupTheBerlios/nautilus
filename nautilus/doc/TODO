@@ -1,0 +1,68 @@
+Not in any particular order:
+
+o  Add 18400 bps ADPCM coder.
+
+o  Prevent startups if pass phrases don't match.
+
+o  Fallback to slower coders if modem speed drops.
+
+o  Some modems return "CARRIER" instead of "CONNECT" as their connect
+   string.  This should probably be dealt with by allowing the user to
+   override the default message strings searched for in the modem
+   control routines with values from the config file.  -- Replace
+   functions that talk to the modem with expect/send scripts along
+   with appropriate driver functions.
+
+o  Consider replacing the "ATS0=1" method of handling auto-answer with
+   code that waits for a "RING" message and then sends an ATA to the
+   modem.
+
+o  Next generation of coders should be subband coders using quadrature
+   filters to split the bands.  Dynamic bit allocation based on a
+   voiced/non-voiced decision or based on spectral energy should also
+   be looked into.  The subbands should be encoded using DPCM with
+   testing of AQF/AQB and APF/APF for optimum performance.
+
+o  GUI wrapper program (Tk/Tcl, Visual Basic, etc.)
+
+o  Support for PGP key exchange
+
+o  Modify Nautilus to allow it to run continuously and accept incoming
+   connections on a specified port (Unix).  The idea is to behave like a
+   regular telephone.  When an incoming call comes in, Nautilus will
+   generate a ringing sound to notify anyone around that there is an
+   incoming call.  If someone is around to take the call, they can
+   respond to the program and begin a conversation.  If not, for now
+   it will simply abort the connection after a specified number of
+   "rings".  In the future, it might be nice to add "answering machine"
+   capability.  Would have to pop up an xterm or a virtual terminal
+   for the answer/session.  Linux utilities are available for this, with a
+   small license.
+
+o  DOS 7/Windows '95 port (volunteers?)
+
+o  Java port (volunteers?)
+
+o  Allow changing of the input/output volume levels while program is
+   running.  This should not be too hard.
+
+o  Turn echoing off for Unix version when running in Talk() function.
+   (I'm not sure what this means -- maybe I have already fixed this. --dm)
+
+o  Make config file parser more user friendly.
+
+o  Fix bug that prevents users on phone from starting Nautilus up directly.
+
+o  Mute function.
+
+o  Silence detection.
+
+o  Answerer should not exit after failure to negotiate, but wait for
+   another call.
+
+o  makefile.dos should have the location of RSAREF generalized, as it
+   is in makefile.unx
+
+o  setup 24/7 echo server(s) that would replay your voice after some
+   delay
+

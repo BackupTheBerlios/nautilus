@@ -1,0 +1,88 @@
+Release Notes for Nautilus V1.7B
+
+Changes since V1.7A:
+
+o Fixed possible variable initialization bug in win32.c
+
+o Fixed entropy calculation problem under Unix (cli.c, util.c)
+
+o Fixed bug in Unix ReadAudio() function.
+
+o Windows version stress tested for memory leaks (none found)
+
+
+Release Notes for Nautilus V1.7A
+
+Changes since V1.6A:
+
+o Added support for win32 (tested on Win95 and WinNT)
+  This involved the creation of the modules win32.c which
+  depends on win32ai.c and win32ao.c for audio input and
+  output respectively.
+
+o Put the code under Visual C++ 5.0 including creating
+  subprojects for the LPC10 speech coder and RSAREF 2.0.
+
+o Formatted some of the code.  Visual C++ uses tabstops
+  every 4 characters.  Some of the modules have been reformatted
+  to reflect this.
+
+o Changed the default Diffie-Helman key exchange size from
+  768 bits to 1024 bits.
+
+o Changed version string.
+
+o A number of compile time dependencies were added throughout
+  the code for _WIN32.
+
+o Fixed f2clib.c (integer exponentiation didn't handle cases
+  involving negative exponentiation correctly).
+
+o Eliminated most warning messages from code (due to the way
+  optimization is specified for the LPC10 coder, it complains
+  about loss of precision when converting floating point constants
+  (which are doubles) to floats.
+
+o Optimization was customized for LPC10 coder.  Otherwise, the
+  encoder runs fast, but the decoder runs slower than the un-
+  optimized code (!).  This was tested on a Pentium processor.
+
+o ntp_udp.c required changes to work with the winsock DLL.
+  sendto() and recvfrom() are now used to send and receive
+  packets because winsock won't let you call recvfrom() on
+  a connected socket.
+
+
+TODO:
+
+Hopefully some of this stuff will get done before the 1.7A release
+makes it to the world!
+
+o Test latest source code on Unix (Solaris/Linux) and PC (win95,
+  WinNT) for interoperability and correct functioning.
+
+o Test for interoperability between 1.7A release and 1.6A release.
+
+o Add (primitive) support for serial devices to the Win32 port
+  so it can be used as a secure telephone (should be trivial
+  other than configuring the serial port).
+
+o Format some more (all?) of the source code.
+
+o Simplify the code in comm.c that deals with sending update
+  information when versions differ.  This is unnecessary.  A
+  simple note to the user using the older version that they
+  may wish to visit the web site for information on obtaining
+  a newer release will suffice in addition to determining whether
+  or not the versions will interoperate and either continuing
+  or aborting as appropriate.
+
+o Tune the buffering in win32ai.c and/or win32ao.c to optimize
+  the tradeoff between dropouts and latency.  Perhaps this should
+  be a user-specifiable parameter (either in the config file or
+  on the command line).
+
+o Should we continue to support DOS?  If not, a fair amount of
+  conditionally compiled code (and configuration parameters) can
+  be eliminated which will improve readability of the code
+  somewhat.

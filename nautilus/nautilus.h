@@ -74,7 +74,7 @@ enum soundcards { SOUNDBLASTER };
 enum config_types { CONFIG_TYPE_STRING, CONFIG_TYPE_NUMBER, CONFIG_TYPE_UINT16 };
 
 /* Operating modes */
-enum modes { ORIGINATE, ANSWER, AUTO_ANSWER };	/* ORIGINATE _must_ be first! */
+enum modes { ORIGINATE, ANSWER, AUTO_ANSWER }; /* ORIGINATE _must_ be first! */
 enum flow { RECEIVE, TRANSMIT };
 enum o_submodes { DIAL, ATD_ONLY } ;
 
@@ -170,6 +170,7 @@ typedef struct cfbctx_t {
 struct param_t {
     enum modes  mode;       /* startup mode */
     enum o_submodes orig_submode; /* submode for originate */
+    char key_ex_only;       /* Stop after key exchange, do not touch sound*/
     char    telno[64];      /* phone # to dial */
     char	hostname[64];	/* hostname of remote host */
     char	upgrade_file[64];/* name of upgrade info file to write to */

@@ -48,9 +48,11 @@
 #include <stdarg.h>
 #include <ctype.h>
 #ifdef linux
-#include <sys/stat.h>           /* man 2 stat
+#include <sys/stat.h>           /* man 2 stat */
 #include <unistd.h>			/* for memory lock */
 #include <sys/mman.h>		/* for memory lock */
+#include <sys/types.h>
+#include <fcntl.h>		
 #endif
 #ifdef _WIN32
 #include <math.h>
@@ -85,6 +87,7 @@ main(int argc, char *argv[])
     char            tbuf[128];
     UINT8           audio_buf[2048];
     void            debug_puts(char *);
+    int             random_fd, wanted_random_bytes, random_bytes;
 	
 #ifdef linux					/* Linux only, for now */
     if (geteuid() == 0) {		/* if we have root privs */
@@ -142,11 +145,11 @@ main(int argc, char *argv[])
 	
     /* parse arguments */
 #if defined(unix)
-    while ((c = getopt(argc, argv, "aAhoOixc:e:k:l:n:p:s:v")) != -1)
+    while ((c = getopt(argc, argv, "aAdhoOixc:e:k:l:n:p:s:v")) != -1)
 #elif defined(_WIN32)
-	while ((c = getopt(argc, argv, "aAhoixc:e:j:k:l:n:v")) != -1)
+	while ((c = getopt(argc, argv, "aAdhoixc:e:j:k:l:n:v")) != -1)
 #else
-	while ((c = getopt(argc, argv, "aAhoxc:e:k:l:p:s:v")) != -1)
+	while ((c = getopt(argc, argv, "aAdhoxc:e:k:l:p:s:v")) != -1)
 #endif
 		switch (c) {
 		case 'a':
@@ -154,6 +157,10 @@ main(int argc, char *argv[])
 			break;
 		case 'A':
 			params.mode = ANSWER;
+			break;
+		case 'd':
+		case 'D':
+			params.key_ex_only = 1;
 			break;
 		case 'h':
 			help();
@@ -281,7 +288,8 @@ main(int argc, char *argv[])
 	 * Test the speed of all the speech coders to determine which are
 	 * fast enough to be used.  Test each of them for at least 200 ms.
 	 */
-	CoderSpeedTest(200, params.verbose);
+	if ( ! params.key_ex_only ) 
+		CoderSpeedTest(200, params.verbose);
 	
 	/*
 	 * Initialize communications channel (network or serial)
@@ -312,16 +320,18 @@ main(int argc, char *argv[])
 			error(MSG_FATAL, "Could not open serial port");
 	}
 	
-	/*
-	 * Initialize audio device for possible playing of startup sound,
-	 * and for recording of sound samples that will be used to
-	 * initialize the pseudo-random number generator.
-	 */
-	if (InitAudio(8000, 128, params.verbose, 0.5) == FAIL) {
-		error(MSG_FATAL, "Could not initialize audio device");
-		/* NOTREACHED */
+	    if ( ! params.key_ex_only ){
+	    /*
+	     * Initialize audio device for possible playing of startup sound,
+	     * and for recording of sound samples that will be used to
+	     * initialize the pseudo-random number generator.
+	     */
+	        if (InitAudio(8000, 128, params.verbose, 0.5) == FAIL) {
+		    error(MSG_FATAL, "Could not initialize audio device");
+		    /* NOTREACHED */
+	        }
 	}
-	
+
 	/* Print startup information. */
 	if (params.net_flag == TRUE) {
 		printf("Selected Port : %5d\t\t", params.net.portnum);
@@ -332,7 +342,7 @@ main(int argc, char *argv[])
 		printf("DTE Speed : %u\n", params.port.speed);
 	}
 	
-	if (vsound) {
+	if (vsound && !  params.key_ex_only ) {
 		/* Play logon file unless supressed. */
 		if (PlayVoice(params.logon_file) == FAIL)
 			fprintf(stderr, "%s not found", params.logon_file);
@@ -405,10 +415,63 @@ main(int argc, char *argv[])
 		for (;;) {
 			float entropy;
 			
-			AudioFlow(TRANSMIT);
-			if (ReadAudio(audio_buf, 2048/128) == FAIL)
+			if (!  params.key_ex_only ){
+			   AudioFlow(TRANSMIT);
+			   if (ReadAudio(audio_buf, 2048/128) == FAIL)
 				error(MSG_FATAL, "ReadAudio() failure.");
-			AudioFlow(RECEIVE);
+			   AudioFlow(RECEIVE);
+			} else {
+			    /* get some random into audio_buf
+			       as we disabled audio . Under Linux
+			       we could use /dev/urandom. We must
+			       realize that we could and probably 
+			       will exhaust the entropy pool.
+			     */
+			
+#ifdef linux
+
+ 
+    /* Linux has a random device which offers data as long as the system
+       has still enough "randomnes" collected. We use it */
+ 
+    wanted_random_bytes = 1024 - 2;
+
+    random_fd = open ("/dev/random",O_RDONLY,O_NONBLOCK);
+    if ( random_fd > 0 ) 
+    {
+        random_bytes = read (random_fd, audio_buf, wanted_random_bytes);
+
+	if  ( random_bytes  > 128 ) /* Just to define a minimum of
+				       "real random" */
+	    {
+	        if (random_bytes <= wanted_random_bytes)  /* should be */
+		{
+		   char *p;
+
+		   /* Fill the rest with Linux Pseudorandom */
+	    	    close(random_fd);
+		    random_fd = open ("/dev/urandom",O_RDONLY,O_NONBLOCK);
+
+		    wanted_random_bytes= wanted_random_bytes - random_bytes;
+		    p= audio_buf+random_bytes;
+		    random_bytes = read (random_fd, audio_buf, 
+					 wanted_random_bytes);
+	        } 
+	     } else { 
+  		error(MSG_FATAL, "not enough LINUX random ");
+                exit(1);
+	     }
+	} else { 
+		error(MSG_FATAL,"could not open LINUX random dev" );
+		exit(1);
+
+	}
+        close(random_fd);
+#endif
+
+
+
+			}              
 			
 			entropy = ComputeEntropy(audio_buf, 2048);
 			if (entropy > 10.0) {
@@ -430,7 +493,8 @@ main(int argc, char *argv[])
 	}
 	
 	/* close the audio device */
-	CloseAudio();
+	if (!  params.key_ex_only )
+		CloseAudio();
 	
 	/* begin communicating */
 	if (params.net_flag) {
@@ -491,7 +555,8 @@ main(int argc, char *argv[])
 	while (connected == FAIL);
 	*/
 	
-	if (vsound && (params.mode == ANSWER || params.mode == AUTO_ANSWER)) {
+	if (vsound && (!  params.key_ex_only ) &&(params.mode == ANSWER 
+                       || params.mode == AUTO_ANSWER)) {
 		/* Play ring file unless supressed.
 		 * We must Re-open audio after getting a connection request,
 		 * because we want the device to remain available until someone calls
@@ -517,28 +582,31 @@ main(int argc, char *argv[])
 			printf("Modem Speed : UNKNOWN\n");
 	}
 	
-	/*
-	 * Create turnaround beep at the correct sampling rate (i.e., the
-	 * sampling rate used by the selected speech coder.
-	 */
-	InitBeep(coders[params.coder.index].sample_rate);
+	if (!  params.key_ex_only ){
+	    /*
+	     * Create turnaround beep at the correct sampling rate (i.e., the
+	     * sampling rate used by the selected speech coder.
+	     */
+	    InitBeep(coders[params.coder.index].sample_rate);
 	
-	/* Initialize audio device for the selected speech coder. */
-	if (InitAudio(coders[params.coder.index].sample_rate,
+	    /* Initialize audio device for the selected speech coder. */
+	    if (InitAudio(coders[params.coder.index].sample_rate,
 		coders[params.coder.index].frame_size, params.verbose,
 		params.jbufsecs) == FAIL) {
 		fprintf(stderr, "Could not initialize audio device.\n");
 		exit(2);
-	}
+	    }
 	
-	/* begin talking */
-	Talk(params.mode == ORIGINATE ? TRANSMIT : RECEIVE);
+	    /* begin talking */
+	    Talk(params.mode == ORIGINATE ? TRANSMIT : RECEIVE);
 	
+	} 
 	if (params.crypto.key1.type != NONE)
 		keydestroy(&params.crypto.key1);	/* wipe key schedule */
 	
 	nsp_close(params.session);		/* close communications channel */
-	CloseAudio();			/* close audio device */
+	if (!  params.key_ex_only )
+		CloseAudio();			/* close audio device */
 	
 	exit(0);
 }
@@ -575,6 +643,7 @@ help(void)
     fprintf(stderr, "    (go secure while in a phone call)\n");
 #endif
     fprintf(stderr, "-a/-A selects auto/manual answer mode\n");
+    fprintf(stderr, "-d key exchange only and end\n");
 #ifndef _WIN32
     fprintf(stderr, "-p <port> selects serial port modem is connected to\n");
     fprintf(stderr, "-s <speed> selects serial DTE (default=%d)\n", params.port.speed);

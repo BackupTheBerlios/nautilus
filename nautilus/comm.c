@@ -140,6 +140,7 @@ XChange(enum modes mode)
 	
     /* Verify that packet is the right size */
     if (packet.length != sizeof(struct negotiate_t)) {
+	error(MSG_ERROR, "Error negotiation packet size mismatch");
         return FAIL;
     }
 	
@@ -286,8 +287,10 @@ XChange(enum modes mode)
             params.coder.index = i;
 		}
     }
-    if (quality < 0)
+    if (quality < 0 && ! params.key_ex_only){
+	 error(MSG_ERROR, "failed to find best Coder (internal error)");
         return FAIL;
+    }
 	
     /* Did answerer specify a coder? */
     if (ans->coder < NCODERS) {
@@ -559,21 +562,33 @@ print_dh_verification (char *agreed_key, int length)
 {
     void sha_memory();
     unsigned long digest[5];
+    int loop; 
 	
+
 #ifdef USE_OLD_SHS
     shs_init();
     while (length-- > 0)
-		shs_process(*agreed_key++);
+	shs_process(*agreed_key++);
     shs_hash(digest);
 #else
     sha_memory(agreed_key, length, digest);
 #endif
-	
+    	
     fprintf (stderr, "DH verification code: %02x%02x %02x%02x\n",
 		digest[1] & 0xFF,			/* was [7] */
 		(digest[3] >> 8) & 0xFF,	/* was [14] */
 		(digest[1] >> 16) & 0xFF,	/* was [5] */
 		(digest[3] >> 24) & 0xFF );	/* was [12] */
+    
+    if ( params.key_ex_only )
+    {
+	printf("Agreed on a key of %d bytes\n",length);
+	puts("- --BEGIN HEXDUMP OF AGREED KEY---");
+	for(loop=0; loop < length; loop++){
+		printf ("%02x", (unsigned char) agreed_key[loop])	;
+	}
+	puts("\n- --END BEGIN HEXDUMP OF AGREED KEY---");
+    } 
 }
 
 void

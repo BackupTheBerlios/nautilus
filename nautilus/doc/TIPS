@@ -1,0 +1,15 @@
+Modems do not connect:
+
+   if the modems do not connect but stay whistling and making ugly
+   noise, try to add this command to the modem init string.
+ 
+   at+ms=11,1,14400,38400 
+
+   It makes the modem not to try "V fast Connects" but only "V34".
+   This is also valid with 56K modems, as 56k is not possible 
+   between two modems, but only with a special peer device. 56k
+   modems fall back to V34.
+
+
+
+

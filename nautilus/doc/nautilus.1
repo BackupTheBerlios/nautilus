@@ -1,6 +1,6 @@
 .\" Copyright 1996 David Miller <dm0@avana.net>
 .\" For distribution with the Nautilus source or executable
-.Dd 22 June 1997
+.Dd 01 Dec 2000
 .Dt NAUTILUS 1
 .Sh NAME
 .Nm nautilus
@@ -8,7 +8,7 @@
 .Sh SYNOPSIS
 .Nm nautilus
 {
-.Fl a | A | o
+.Fl a | A | o | O
 }
 .Op Fl c Ar coder
 .Op Fl e Ar cipher
@@ -76,6 +76,11 @@ Originate a
 .Nm nautilus
 session
 
+.Fl O
+Originate a
+.Nm nautilus
+session without dialing i.e. while talking on the Phone
+
 .Fl p Ar port
    Serial port for direct modem connection
 
@@ -92,27 +97,41 @@ Suppress startup and ring sounds
 Export of
 .Nm nautilus
 encryption code from the United States is presumably regulated by the
-U.S. Department of Commerce via the Commerce Control List.  Export this
-software at your own risk.
+U.S. Department of Commerce via the Commerce Control List.  Export 
+this software from the USA (or import to the USA) at your own risk.
+
 
 .Sh CONFIGURATION FILE
 Typically named 
 .Nm nautilus.cfg ,
 alternatively specified by the environment variable
 .Nm NAUTILUS_CONFIG_FILE .
+With the 
+.Nm UNIX
+version these are 
+.Nm /etc/nautilus.cfg 
+(system wide) and 
+.Nm ~/nautilus.cfg.
+(per user)
+
 .Sh SEE ALSO
 .Nm ANNOUNCE ,
 .Nm CHANGES ,
 .Nm nautilus.doc ,
 .Nm rsalicen.txt ,
-.Nm http://www.lila.com/nautilus/ .
+.Nm http://www.lila.com/nautilus/ ,
+( original developers home page)
+.Nm http://www.franken.de/crypt/nautilus/ 
+(new home page).
 
 .Sh AUTHORS
 Originally developed by William Dorsey <dorsey@lila.com>, Pat Mullarky,
 and Paul Rubin.  Additional development and support from the rest
 of the Nautilus development team <nautilus@lila.com>.  Post-1.5a development
-by David Miller <dm0@avana.net>
+by David Miller <dm0@avana.net>. Maintained now by the secure Telephony
+group Erlangen <secfone@immd1.informatik.uni-erlangen.de> 
+and Johannes Poehlmann
 
 .Sh PLATFORMS
 Ported to MS-DOS, Sun OS, Solaris, and Linux.
-.\" .TH NAUTILUS 1 "22 June 1997" "Nautilus 1.6a" "Nautilus Manual"
+.\" .TH NAUTILUS 1 "01 Dec 2000" "Nautilus 1.7c" "Nautilus Manual"

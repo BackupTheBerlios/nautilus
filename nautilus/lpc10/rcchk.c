@@ -20,8 +20,10 @@ extern int rcchk_(integer *order, real *rc1f, real *rc2f);
 /* 	RCCHK Version 45G */
 
 /* $Log: rcchk.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.4  1996/03/27  18:13:47  jaf */
 /* Commented out a call to subroutine ERROR. */

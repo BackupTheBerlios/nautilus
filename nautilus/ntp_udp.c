@@ -53,7 +53,7 @@ static char *
 serror(void)
 {
     extern int sys_nerr;
-    extern char *sys_errlist[];
+    extern __const char *__const sys_errlist[];
     return (errno >= 0 && errno < sys_nerr)
 		? sys_errlist[errno] : "Error out of range";
 }

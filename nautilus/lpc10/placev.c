@@ -20,8 +20,10 @@ extern int placev_(integer *osbuf, integer *osptr, integer *oslen, integer *obou
 /* 	PLACEV Version 48 */
 
 /* $Log: placev.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.6  1996/03/19  20:42:19  jaf */
 /* Added some conditions satisfied by the output values in VWIN. */

@@ -1,7 +1,7 @@
 /*********************blowfish.h********************/
 
 /* SCCS ID:  @(#)blowfish.h 1.1 96/02/29 */
-/* $Id: blowfish.h,v 1.1 2001/01/24 21:27:17 jpoehlmann Exp $*/
+/* $Id: blowfish.h,v 1.2 2001/01/25 23:45:49 jpoehlmann Exp $*/
 
 #define MAXKEYBYTES 56		/* 448 bits */
 #define bf_N             16

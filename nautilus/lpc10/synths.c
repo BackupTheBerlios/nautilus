@@ -41,8 +41,10 @@ static real c_b2 = .7f;
 /* 	SYNTHS Version 54 */
 
 /* $Log: synths.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.5  1996/08/01  19:31:58  dm */
 /* Normalized array indexing in initialization code */
@@ -176,8 +178,10 @@ static real c_b2 = .7f;
 /*< 	INCLUDE 'config.fh' >*/
 /*< 	INCLUDE 'contrl.fh' >*/
 /* $Log: synths.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.3  1996/03/29  22:03:47  jaf */
 /* Removed definitions for any constants that were no longer used. */
@@ -195,8 +199,10 @@ static real c_b2 = .7f;
 /*< 	INTEGER VOICE(2), PITCH >*/
 /*       Arguments */
 /* $Log: synths.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.3  1996/03/29  22:05:55  jaf */
 /* Commented out the common block variables that are not needed by the */

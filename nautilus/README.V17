@@ -1,3 +1,26 @@
+Release Notes for Nautilus V1.7C
+
+This release incorporates some minor patches needed for linux
+and modem acces. A later release will replace the crypto library
+to makes nautilus completely free software.
+
+Changes since V1.7B:
+
+o Nautilus is now maintained by the Secure Telephony Working 
+  Group Erlangen (Germany) and Johannes Poehlmann. 
+
+o New project homepage: www.franken.de/crypt/nautilus
+ 
+o Allow to configure Modem init string and Modem Dial prefix. 
+
+o Tweaked the makefiles to compile on Linux
+
+o When compiled for Unix, look for configuration files 
+  /etc/nautilus.cfg and ~/.nautilus.cfg 
+
+o Allow to "go secure" with the modem while in a phone call
+
+
 Release Notes for Nautilus V1.7B
 
 Changes since V1.7A:

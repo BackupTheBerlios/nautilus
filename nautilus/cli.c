@@ -31,6 +31,15 @@
  * 97/06/01  D. Miller          Renamed 'VoiceLogon()' to 'PlayVoice()'
  * 97/06/15  D. Miller          Moved exit(1) to end of usage(), since all
  *                              calls did exit(1)'d immediately.
+ * 00/11/05  J.Poehlmann        UNIX: search config files at standard place
+ *                              LINUX:tweak makefile to get nautilus compiled  
+ *                              UNIX: Do not throw away Modem init string 
+ *                                    and allow to specify dial prefix  
+ *                              UNIX: Allow to "go secure" in a phone call
+ *                              replace unsafe gets by fgets to solve a 
+ *				academic buffer overflow problen: user types 
+ *				more then 128 letters when asked to blow 
+ *				into the mike.
  */
 
 #include <stdio.h>
@@ -39,6 +48,7 @@
 #include <stdarg.h>
 #include <ctype.h>
 #ifdef linux
+#include <sys/stat.h>           /* man 2 stat
 #include <unistd.h>			/* for memory lock */
 #include <sys/mman.h>		/* for memory lock */
 #endif
@@ -57,6 +67,9 @@ extern struct negotiate_t negotiate;/* capability negotiation parameters */
 extern char    *optarg;
 extern int      optind;
 
+
+#define CONFIGFILENAMLEN 256
+
 void 
 main(int argc, char *argv[])
 {
@@ -65,6 +78,7 @@ main(int argc, char *argv[])
     char            connected;
     char            vsound = TRUE;
     char           *fname;
+    char            fname1[CONFIGFILENAMLEN];
     char           *pw;
     char            pw1[MAX_SKEY_LEN+1];
     char            pw2[MAX_SKEY_LEN+1];
@@ -93,13 +107,42 @@ main(int argc, char *argv[])
     }
 	
     /* read configuration file */
-    if ((fname = getenv("NAUTILUS_CONFIG_FILE")) != NULL)
-		if (ReadConfigFile(fname) == FAIL)
+
+    if ((fname = getenv("NAUTILUS_CONFIG_FILE")) != NULL) {
+
+	if (ReadConfigFile(fname) == FAIL) 
+		exit(1);
+
+#if defined(unix)       /* try home directory */
+    
+
+    } else {
+
+       struct stat BUF;
+
+       strncpy(fname1, "/etc/nautilus.cfg", CONFIGFILENAMLEN);
+       if (stat(fname1, &BUF) == 0){  /* stat succes, File exists */
+               if (ReadConfigFile(fname1) == FAIL)
+                       exit(1);
+       }
+       /* We hope that it is legal to execute ReadConfigFile two times */
+	       
+	strncpy(fname1,getenv("HOME"),CONFIGFILENAMLEN);
+	strcat (fname1,"/.nautilus.cfg");
+
+        /* printf ("configfile: %s\n", fname1);  go away */
+        if (stat(fname1, &BUF) == 0){  /* stat succes, File exists */
+		if (ReadConfigFile(fname1) == FAIL)
 			exit(1);
+	}
+	
+	
+#endif
+     }
 	
     /* parse arguments */
 #if defined(unix)
-    while ((c = getopt(argc, argv, "aAhoixc:e:k:l:n:p:s:v")) != -1)
+    while ((c = getopt(argc, argv, "aAhoOixc:e:k:l:n:p:s:v")) != -1)
 #elif defined(_WIN32)
 	while ((c = getopt(argc, argv, "aAhoixc:e:j:k:l:n:v")) != -1)
 #else
@@ -117,6 +160,11 @@ main(int argc, char *argv[])
 			exit(0);
 		case 'o':
 			params.mode = ORIGINATE;
+			params.orig_submode = DIAL;
+			break;
+		case 'O':
+			params.mode = ORIGINATE;
+			params.orig_submode = ATD_ONLY;
 			break;
 		case 'x':
 			vsound = FALSE;
@@ -211,8 +259,10 @@ main(int argc, char *argv[])
 			usage();
 		}
 		else {
-			fprintf(stderr, "-o option requires argument.\n\n");
-			usage();
+			if ( params.orig_submode == DIAL){
+			    fprintf(stderr, "-o option requires argument.\n\n");
+			    usage();
+			}
 		}
 	}
 	else if ((params.mode == ANSWER) || (params.mode == AUTO_ANSWER)) {
@@ -371,7 +421,7 @@ main(int argc, char *argv[])
 				printf("about 1 second, and hit the <Return> key while blowing.  If you want\n");
 				printf("to override the entropy check, type 'q' followed by <Return>: ");
 				fflush(stdout);
-				gets(tbuf);
+				fgets(tbuf,15,stdin); /* be paranoid */
 				if (toupper(tbuf[0]) == 'Q')
 					break;
 			}
@@ -498,7 +548,7 @@ void
 title(void)
 {
     fprintf(stderr, "\nNautilus Digital Voice Communicator -- %s\n", VERSION_STRING);
-    fprintf(stderr, "Copyright (c) 1993-1998 William W. Dorsey, All Rights Reserved\n\n");
+    fprintf(stderr, "Copyright (c) 1993-2000 William W. Dorsey, All Rights Reserved\n\n");
 }
 
 
@@ -508,7 +558,7 @@ credits(void)
     fprintf(stderr, "Nautilus was originally developed by William Dorsey, Pat Mullarky, and\n");
     fprintf(stderr, "Paul Rubin.  For more information on Nautilus, including a list of the\n");
 	fprintf(stderr, "current development team, latest version, frequently asked questions,\n");
-	fprintf(stderr, "and more, visit <http://www.lila.com/nautilus>\n\n");
+	fprintf(stderr, "and more, visit <http://www.franken.de/crpyt/nautilus>\n\n");
 }
 
 
@@ -520,6 +570,10 @@ help(void)
     fprintf(stderr, "Here's a quick summary of Nautilus commands...\n\n");
     fprintf(stderr, "-h produces this summary\n");
     fprintf(stderr, "-o selects originate dialup mode\n");
+#ifndef _WIN32
+    fprintf(stderr, "-O selects originate mode with modem takeover\n");
+    fprintf(stderr, "    (go secure while in a phone call)\n");
+#endif
     fprintf(stderr, "-a/-A selects auto/manual answer mode\n");
 #ifndef _WIN32
     fprintf(stderr, "-p <port> selects serial port modem is connected to\n");

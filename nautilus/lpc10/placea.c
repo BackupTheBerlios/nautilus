@@ -20,8 +20,10 @@ extern int placea_(integer *ipitch, integer *voibuf, integer *obound, integer *a
 /* 	PLACEA Version 48 */
 
 /* $Log: placea.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.5  1996/03/19  20:41:55  jaf */
 /* Added some conditions satisfied by the output values in EWIN. */

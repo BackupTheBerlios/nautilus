@@ -20,8 +20,10 @@ extern integer random_(void);
 /* 	RANDOM Version 49 */
 
 /* $Log: random.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.3  1996/03/20  16:13:54  jaf */
 /* Rearranged comments a little bit, and added comments explaining that */

@@ -34,8 +34,10 @@ static integer c__2 = 2;
 /* 	ENCODE Version 54 */
 
 /* $Log: encode.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.5  1996/03/26  19:35:50  jaf */
 /* Commented out trace statements. */
@@ -116,8 +118,10 @@ static integer c__2 = 2;
 /*< 	INCLUDE 'config.fh' >*/
 /*< 	INCLUDE 'contrl.fh' >*/
 /* $Log: encode.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.3  1996/03/29  22:03:47  jaf */
 /* Removed definitions for any constants that were no longer used. */
@@ -135,8 +139,10 @@ static integer c__2 = 2;
 /*< 	INTEGER VOICE(2), PITCH >*/
 /*       Arguments */
 /* $Log: encode.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.3  1996/03/29  22:05:55  jaf */
 /* Commented out the common block variables that are not needed by the */

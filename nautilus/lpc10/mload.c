@@ -20,8 +20,10 @@ extern int mload_(integer *order, integer *awins, integer *awinf, real *speech, 
 /* 	MLOAD Version 48 */
 
 /* $Log: mload.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.6  1996/07/12  23:59:51  dm */
 /* Removed crazy use of middle-man variable */

@@ -31,8 +31,10 @@ extern struct {
 /* 	DYPTRK Version 53 */
 
 /* $Log: dyptrk.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.7  1997/01/11  19:35:35  dm */
 /* Changed initialization and change to optimize indexing with iptr */
@@ -121,8 +123,10 @@ extern struct {
 /*< 	INTEGER LTAU, MINPTR, VOICE, PITCH, MIDX >*/
 /*       Arguments */
 /* $Log: dyptrk.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.3  1996/03/29  22:05:55  jaf */
 /* Commented out the common block variables that are not needed by the */

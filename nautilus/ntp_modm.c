@@ -11,6 +11,9 @@
 /* ntp_modm.c
  *
  * SCCS ID:  @(#)ntp_modm.c 1.4 96/05/20
+ *
+ * Changes:
+ * 00/10/10 J.Poehlmann      Do not throw away modem init string and dial prefix
  */
 
 #include <stdio.h>
@@ -30,6 +33,9 @@
 #include <unistd.h>
 #define	PAUSE(ms)		usleep(ms*1000)
 #endif
+
+/* external variables */
+extern struct param_t params;           /* operating parameters */
 
 static char	*default_modem_port = NULL;
 static unsigned int default_modem_speed = 19200;
@@ -140,12 +146,14 @@ WaitFor(char *string, int wait, void (*msg_cb)(char *msg))
  * This function will behave unpredictably if the modem initialization
  * string modem_init, or the phone number in phone, overflow the fixed
  * size internal string buf.
+ * secfone: fixed that by just clipping strings
  */
 
 static int
-Connect(char *phone, char *modem_init, void (*msg_cb)(char *msg))
+Connect(char *phone, char *modem_init, char *prefix, void (*msg_cb)(char *msg))
 {
-    char            buf[256];
+#define  BUFLEN  256
+    char buf[BUFLEN];
 
     WritePort("AT\r", 3);
     if (WaitFor("OK", 2, NULL) < 0) {
@@ -157,7 +165,7 @@ Connect(char *phone, char *modem_init, void (*msg_cb)(char *msg))
     PAUSE(100);                         /* wait 100ms */
     if (strlen(modem_init) != 0) {      /* config string defined? */
         strcpy(buf, "AT");
-        strcat(buf, modem_init);
+        strncat(buf, modem_init, BUFLEN-10);
         strcat(buf, "\r");
         WritePort(buf, strlen(buf));
         if (WaitFor("OK", 2, NULL) < 0) {
@@ -166,8 +174,11 @@ Connect(char *phone, char *modem_init, void (*msg_cb)(char *msg))
     }
     PAUSE(100);                 /* wait 100ms */
     strcpy(buf, "AT");
-    if (strlen(phone) != 0) {
-        sprintf(buf + strlen(buf), "DT%s\r", phone);
+    /* a phone number of more then 100 digits must be bogus - ignore */ 
+    if (strlen(phone) != 0 && strlen(phone) < (BUFLEN-10) ) {
+	strcat (buf," D"); 
+	strncat (buf,prefix,2); 
+        sprintf(buf + strlen(buf), " %s\r", phone);
     } else {
         strcat(buf, "D\r");
     }
@@ -256,7 +267,11 @@ xxopen(NTP_HANDLE *h, char *address, long timeout)
 	}
     }
     else {
-        if (Connect(address, "V1", h->msg_cb) == -1) {
+        if (Connect(	address,
+			params.modem.init, 
+			params.modem.prefix,
+			h->msg_cb
+		    ) == -1) {
             errno = ENODEV;
             return -1;
         }

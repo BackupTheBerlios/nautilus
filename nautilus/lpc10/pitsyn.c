@@ -19,8 +19,10 @@ extern int initpitsyn_(void);
 /* 	PITSYN Version 53 */
 
 /* $Log: pitsyn.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.2  1996/03/25  18:49:07  jaf */
 /* Added commments about which indices of array arguments are read or */
@@ -113,8 +115,10 @@ extern int initpitsyn_(void);
 /*< 	INTEGER ORDER, VOICE(2), PITCH >*/
 /*       Arguments */
 /* $Log: pitsyn.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.3  1996/03/29  22:03:47  jaf */
 /* Removed definitions for any constants that were no longer used. */

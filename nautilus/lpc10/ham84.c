@@ -20,8 +20,10 @@ extern int ham84_(integer *input, integer *output, integer *errcnt);
 /* 	HAM84 Version 45G */
 
 /* $Log: ham84.c,v $
-/* Revision 1.1  2001/01/24 21:27:18  jpoehlmann
-/* Initial revision
+/* Revision 1.2  2001/01/25 23:45:49  jpoehlmann
+/* Version 1.7c. Identical with files on the ftp Server ftp.franken.de.
+/* (+ 1 patch in cli.c, wich is on the server too)
+/* Not compiled now
 /* */
 /* Revision 1.3  1996/03/21  15:26:00  jaf */
 /* Put comment header in standard form. */

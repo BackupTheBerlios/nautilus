@@ -17,6 +17,7 @@
  * DATE      RESPONSIBLE PARTY  DESCRIPTION
  * -------------------------------------------------------------------------
  * 93/12/31  B. Dorsey          Module created
+ * 00/10/10  J.Poehlmann        added modem dial prefix string
  */
 
 #include "nsp.h"
@@ -30,7 +31,7 @@
 #define NCIPHERS			4
 #define VERSION_MAJOR		1
 #define VERSION_MINOR		7
-#define VERSION_STRING		"Version 1.7b"
+#define VERSION_STRING		"Version 1.7c"
 
 /* Miscellaneous parameters */
 #define MAX_SKEY_LEN		80
@@ -75,6 +76,7 @@ enum config_types { CONFIG_TYPE_STRING, CONFIG_TYPE_NUMBER, CONFIG_TYPE_UINT16 }
 /* Operating modes */
 enum modes { ORIGINATE, ANSWER, AUTO_ANSWER };	/* ORIGINATE _must_ be first! */
 enum flow { RECEIVE, TRANSMIT };
+enum o_submodes { DIAL, ATD_ONLY } ;
 
 /* Packet types */
 enum pkt_type { UDATA, RDATA, FILL, XMIT, RECV, UEOT, REOT, MAX_PACKET_TYPE };
@@ -167,6 +169,7 @@ typedef struct cfbctx_t {
 
 struct param_t {
     enum modes  mode;       /* startup mode */
+    enum o_submodes orig_submode; /* submode for originate */
     char    telno[64];      /* phone # to dial */
     char	hostname[64];	/* hostname of remote host */
     char	upgrade_file[64];/* name of upgrade info file to write to */
@@ -188,6 +191,7 @@ struct param_t {
     struct modem_t {
 	unsigned speed;         /* modem connect speed */
 	char     init[128];     /* modem initialization string */
+	char     prefix[128];   /* modem dial prefix string */
 	char	 reset[128];	/* modem reset string */
     } modem;
     struct audio_t {

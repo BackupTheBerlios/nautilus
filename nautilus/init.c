@@ -19,6 +19,7 @@
  * 93/12/08  B. Dorsey          Module created by breakup of nautilus.c
  * 93/12/31  B. Dorsey          Added config_tbl[] array
  * 96/08/31  D. Miller          Added decoding time CoderSpeedTest()
+ * 00/10/10  J. Poehlmann       Added MODEM_PREFIX config file Parameter
  */
 
 #include <stdio.h>
@@ -42,6 +43,7 @@ struct config_t config_tbl[] = {
     {"SPEED", CONFIG_TYPE_NUMBER, &params.port.speed},
     {"PORT", CONFIG_TYPE_STRING, &params.port.name},
     {"MODEM_INIT", CONFIG_TYPE_STRING, &params.modem.init},
+    {"MODEM_PREFIX", CONFIG_TYPE_STRING, &params.modem.prefix},
     {"MODEM_RESET", CONFIG_TYPE_STRING, &params.modem.reset},
     {"SND_IO", CONFIG_TYPE_UINT16, &params.msdos.snd_iobase},
     {"SND_IRQ", CONFIG_TYPE_UINT16, &params.msdos.snd_irq},

@@ -14,6 +14,10 @@ COPT= -O
 WARNINGS = -Wall
 CFLAGS   = -pipe $(COPT) $(WARNINGS)
 
+# Default install Locations
+BINDIR = /usr/local/bin
+MANDIR = /usr/local/man 
+
 # blank separated list of NTP class module base names
 NTP_CLASSES=	ntp_udp ntp_modm
 
@@ -81,7 +85,7 @@ all:
 	@echo ""
 
 # Sun Sparcstation with gcc
-sol1gcc:
+sol1gcc: $(RSAREF)/rsaref.a
 	$(MAKE) nautilus nuke unnuke \
 	CFLAGS="-pipe $(COPT) $(WARNINGS) -I/usr/demo/SOUND -I$(RSAREF) \
 	-DUNIX -DORDER_ABCD -DSP85 -DAUDIO_DEVICE_8KHZ_ONLY -DCLIP" \
@@ -89,7 +93,7 @@ sol1gcc:
 	-laudio -lm"
 
 # Sun Sparcstation running Solaris 2.x and gcc
-sol2gcc:
+sol2gcc: $(RSAREF)/rsaref.a
 	$(MAKE) nautilus nuke unnuke \
 	CFLAGS="-pipe $(COPT) $(WARNINGS) -I/usr/demo/SOUND/include \
 	-I$(RSAREF) -DUNIX -DORDER_ABCD -DSOLARIS \
@@ -114,12 +118,12 @@ sol2gcc:
 
 # This assumes you are running linux on the Intel platform.
 # Anyone who gets other platforms to work under linux, please send email.
-linux:
+linux:  $(RSAREF)/rsaref.a
 	$(MAKE) nautilus \
 	CFLAGS="-pipe $(COPT) $(WARNINGS) -DUNIX -DORDER_DCBA -DCLIP \
-	-I$(RSAREF)/source" 
+	-I$(RSAREF)" 
 
-nautilus: rsaref.a liblpc10.a $(NAUTILUS_OBJ)
+nautilus: $(RSAREF)/rsaref.a liblpc10.a $(NAUTILUS_OBJ)
 	$(CC) -o nautilus $(NAUTILUS_OBJ) $(LIBS)
 
 ntp_tab.o: ntp.h Makefile
@@ -132,7 +136,7 @@ unnuke:	nuke
 	-rm -f unnuke
 	ln nuke unnuke
 
-rsaref.a:
+$(RSAREF)/rsaref.a:
 	(cd rsaref; $(MAKE) -f makefile.unx)
 
 liblpc10.a:
@@ -140,10 +144,11 @@ liblpc10.a:
 
 clean:
 	-rm -f core $(NAUTILUS_OBJ) $(NUKE_OBJ) liblpc10.a nautilus nuke unnuke
+	(cd rsaref; $(MAKE) -f makefile.unx clobber)
 
 install:
-	cp nautilus /usr/local/bin
-	cp ../doc/nautilus.1 /usr/local/man/man1
+	cp nautilus $(BINDIR)
+	cp doc/nautilus.1 $(MANDIR)/man1
 
 # Dependencies
 nautilus.h: machine.h

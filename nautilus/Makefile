@@ -3,6 +3,16 @@
 #
 # SCCS ID: @(#)makefile.unx 1.14 96/05/25
 #
+MAJOR  = 1
+MINOR  = 7d
+VERSION = $(MAJOR).$(MINOR)
+
+release-tag:
+	cvs tag v$(MAJOR)_$(MINOR)_$(MMINOR)
+
+release-tag-force:
+	cvs tag -F v$(MAJOR)_$(MINOR)_$(MMINOR)
+
 
 # default C compiler
 CC= gcc
@@ -149,6 +159,8 @@ clean:
 install:
 	cp nautilus $(BINDIR)
 	cp doc/nautilus.1 $(MANDIR)/man1
+
+
 
 # Dependencies
 nautilus.h: machine.h

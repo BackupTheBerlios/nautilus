@@ -3,16 +3,16 @@
  *
  * Jim Gillogly 3 May 1993
  *
- * 27 Aug 93: imported LITTLE_ENDIAN mods from Peter Gutmann's implementation
+ * 27 Aug 93: imported LOCAL_LITTLE_ENDIAN mods from Peter Gutmann's implementation
  * 5 Jul 94: Modified for NSA fix
- * 19 Jun 97: Equated LITTLE_ENDIAN to ORDER_DCBA for Nautilus -- David Miller
+ * 19 Jun 97: Equated LOCAL_LITTLE_ENDIAN to ORDER_DCBA for Nautilus -- David Miller
  *
  * Compile: cc -O -o sha sha.c
  *
  * To remove the test wrapper and use just the nist_hash() routine,
  *      compile with -DONT_WRAP
  *
- * To reverse byte order for little-endian machines, use -DLITTLE_ENDIAN
+ * To reverse byte order for little-endian machines, use -DLOCAL_LITTLE_ENDIAN
  *
  * To get the original SHA definition before the 1994 fix, use -DVERSION_0
  *
@@ -58,7 +58,7 @@
 #define ONT_WRAP        /* for Nautilus -- comment out to make standalone exe */
 
 #ifdef ORDER_DCBA       /* Make compatible with Nautilus #defines */
-#define LITTLE_ENDIAN
+#define LOCAL_LITTLE_ENDIAN
 #endif
 
 /* #define VERSION_0 */  /* Define this to get the original SHA definition */
@@ -150,7 +150,7 @@ char *argv[];
 
 #endif ONT_WRAP
 
-#ifdef LITTLE_ENDIAN    /* Imported from Peter Gutmann's implementation */
+#ifdef LOCAL_LITTLE_ENDIAN    /* Imported from Peter Gutmann's implementation */
 
 /* When run on a little-endian CPU we need to perform byte reversal on an
    array of longwords.  It is possible to make the code endianness-
@@ -170,7 +170,7 @@ static void byteReverse( unsigned long *buffer, int byteCount )
 	buffer[ count ] = ( ( value & 0xFF00FF00L ) >> 8 ) | ( ( value & 0x00FF00FFL ) << 8 );
 	}
     }
-#endif /* LITTLE_ENDIAN */
+#endif /* LOCAL_LITTLE_ENDIAN */
 
 
 
@@ -311,21 +311,21 @@ unsigned long *buf;
 		{
 			d.W[14] = hi_length;
 			d.W[15] = lo_length;
-#ifdef LITTLE_ENDIAN
+#ifdef LOCAL_LITTLE_ENDIAN
 	      byteReverse(d.W, 56 );
-#endif /* LITTLE_ENDIAN */
+#endif /* LOCAL_LITTLE_ENDIAN */
 		}
-#ifdef LITTLE_ENDIAN
+#ifdef LOCAL_LITTLE_ENDIAN
 	   else byteReverse(d.W, 64 );
-#endif /* LITTLE_ENDIAN */
+#endif /* LOCAL_LITTLE_ENDIAN */
 	}
 	else    /* Full block -- get efficient */
 	{
 		if ((lo_length += 512) < 512)
 			hi_length++;    /* 64-bit integer */
-#ifdef LITTLE_ENDIAN
+#ifdef LOCAL_LITTLE_ENDIAN
 	   byteReverse(d.W, 64 );
-#endif /* LITTLE_ENDIAN */
+#endif /* LOCAL_LITTLE_ENDIAN */
 	}
 
 	p0 = d.W;

@@ -551,7 +551,7 @@ nsp_get(NSP_HANDLE *h, void *buf, unsigned size, long timeout)
 #endif
 	    return 0;
 	}
-    } while (t = timeleft(t0, timeout));
+    } while (t == timeleft(t0, timeout));
 #ifdef NSPDEBUG
     fprintf(stderr, "nsp_get: timeout\n");
 #endif

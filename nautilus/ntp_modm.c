@@ -14,6 +14,7 @@
  *
  * Changes:
  * 00/10/10 J.Poehlmann      Do not throw away modem init string and dial prefix
+ * 04/02/29 S. Wieseckel     fixed compiler warning
  */
 
 #include <stdio.h>
@@ -294,6 +295,7 @@ xxclose(NTP_HANDLE *h)
     if (default_modem_port)
 	free(default_modem_port);
     ClosePort();
+    return(0);
 }
 
 static int

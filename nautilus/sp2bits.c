@@ -28,30 +28,31 @@
  * 				floating point arithmetic versions of
  * 				SP124 coders into one file.
  * 96/02/23  J. A. Fingerhut	Added code for clipping of samples.
+ * 04/02/29  S. Wieseckel	fixed compiler warning
  */
 
 #include <stdio.h>
 
 #include "machine.h"
 
-/*
- * There will be several places in this file containing constructs
- * like this:
- * 
- * #ifdef FIXED_POINT_ARITHMETIC
- * 
- * ... some code for fixed point version ...
- * 
- * #else /* FIXED_POINT_ARITHMETIC * /
- * 
- * ... some code for floating point version ...
- * 
- * #endif /* FIXED_POINT_ARITHMETIC * /
- *                                  ^^^
- *                          Don't eliminate this blank.  I think you
- *                          can figure out why :-)
- * 
- * will be seen.  This same file is intended to be the source file for
+//*
+//* There will be several places in this file containing constructs
+//* like this:
+//* 
+//* #ifdef FIXED_POINT_ARITHMETIC
+//* 
+//* ... some code for fixed point version ...
+//* 
+//* #else /* FIXED_POINT_ARITHMETIC * /
+//* 
+//* ... some code for floating point version ...
+//* 
+//* #endif /* FIXED_POINT_ARITHMETIC * /
+//*                                  ^^^
+//*                          Don't eliminate this blank.  I think you
+//*                          can figure out why :-)
+//* 
+/* will be seen.  This same file is intended to be the source file for
  * both the fixed point version of the SP64 and SP85 speech coders,
  * and the floating point version.  This symbol is also used in the
  * header file fixfloat.h.

@@ -365,6 +365,7 @@ reread:
 		return -1;
 	}
 	/* NOTREACHED */
+	return(0);
 }
 	
 NTP_CLASS ntp_udp = {

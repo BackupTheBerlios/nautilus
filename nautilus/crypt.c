@@ -146,6 +146,7 @@ xmalloc (int nbytes)
     return p;
   error (MSG_FATAL, "out of memory");
   /* NOTREACHED */
+  return(NULL);
 }
 
 void
@@ -176,6 +177,7 @@ user_key_size (struct key_t *k)
     error (MSG_FATAL, "illegal cipher");
   }
   /* NOTREACHED */
+  return(0);
 }
 
 /*

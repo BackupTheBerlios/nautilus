@@ -1,3 +1,21 @@
+Release 1.6e
+------------
+o Fixed a couple of compiler warnings (Stefan did it)
+
+Release 1.7d 
+------------
+o also check for config in /etc/nautilis.cfg under UNIX
+
+Release 1.7c
+------------
+o streamline Makefile to use BINDIR and MANDIR
+o -O switch to take over call from telefone
+o default config file to ~/.nautilus.cfg under UNIX
+
+Release 1.7b
+------------
+Status as taken over from original developers.
+
 Release 1.6a
 ------------
 

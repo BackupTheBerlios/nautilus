@@ -37,6 +37,7 @@
  * 96/12/15  D. Miller          Removed unused variables
  * 97/05/01  D. Miller          Renamed 'VoiceLogon()' to 'PlayVoice()'
  * 97/07/22  D. Miller          PlayVoice() now returns SUCCESS/FAIL
+ * 04/02/29  S. Wieseckel       fixed compiler warning
  */
 
 #include <stdio.h>
@@ -46,6 +47,7 @@
 #include <fcntl.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <time.h>
 
 #if defined(sun)
 #define	AUDIO_DEVICE	"/dev/audio"

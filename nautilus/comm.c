@@ -18,6 +18,7 @@
  * -------------------------------------------------------------------------
  * 93/12/08  B. Dorsey       Module created by breakup of nautilus.c
  * 95/09/17  P. Kronenwetter Added socket support from S. Parekh patches.
+ * 04/02/29  S. Wieseckel    fixed compiler warning
  */
 
 #include <stdio.h>
@@ -67,7 +68,10 @@ XChange(enum modes mode)
     int                i, speed, i_am_newer, compatible, quality;
     struct negotiate_t *orig, *ans, *older_version, *newer_version;
     struct packet_t    packet;
-	
+
+    orig = NULL;
+    ans = NULL;
+
     /* Set modem speed in negotiation parameters (if known) */
     if (params.modem.speed > 0) {
         negotiate.modem_speed[0] = params.modem.speed % 256;	/* LSB */
@@ -575,11 +579,11 @@ print_dh_verification (char *agreed_key, int length)
 #endif
     	
     fprintf (stderr, "DH verification code: %02x%02x %02x%02x\n",
-		digest[1] & 0xFF,			/* was [7] */
-		(digest[3] >> 8) & 0xFF,	/* was [14] */
-		(digest[1] >> 16) & 0xFF,	/* was [5] */
-		(digest[3] >> 24) & 0xFF );	/* was [12] */
-    
+                (unsigned int)digest[1] & 0xFF,		/* was [7] */
+               ((unsigned int)digest[3] >> 8) & 0xFF,	/* was [14] */
+               ((unsigned int)digest[1] >> 16) & 0xFF,	/* was [5] */
+               ((unsigned int)digest[3] >> 24) & 0xFF );/* was [12] */
+
     if ( params.key_ex_only )
     {
 	printf("Agreed on a key of %d bytes\n",length);

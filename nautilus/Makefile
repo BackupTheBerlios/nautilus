@@ -4,14 +4,14 @@
 # SCCS ID: @(#)makefile.unx 1.14 96/05/25
 #
 MAJOR  = 1
-MINOR  = 7d
+MINOR  = 7e
 VERSION = $(MAJOR).$(MINOR)
 
 release-tag:
-	cvs tag v$(MAJOR)_$(MINOR)_$(MMINOR)
+	cvs tag -R v$(MAJOR)_$(MINOR)_$(MMINOR)
 
 release-tag-force:
-	cvs tag -F v$(MAJOR)_$(MINOR)_$(MMINOR)
+	cvs tag -R -F v$(MAJOR)_$(MINOR)_$(MMINOR)
 
 
 # default C compiler

@@ -40,6 +40,7 @@
  *				academic buffer overflow problen: user types 
  *				more then 128 letters when asked to blow 
  *				into the mike.
+ * 04/02/29 S. Wieseckel	fixed compiler warning
  */
 
 #include <stdio.h>
@@ -48,9 +49,9 @@
 #include <stdarg.h>
 #include <ctype.h>
 #ifdef linux
-#include <sys/stat.h>           /* man 2 stat */
-#include <unistd.h>			/* for memory lock */
-#include <sys/mman.h>		/* for memory lock */
+#include <sys/stat.h>	/* man 2 stat */
+#include <unistd.h>	/* for memory lock */
+#include <sys/mman.h>	/* for memory lock */
 #include <sys/types.h>
 #include <fcntl.h>		
 #endif
@@ -72,7 +73,7 @@ extern int      optind;
 
 #define CONFIGFILENAMLEN 256
 
-void 
+int 
 main(int argc, char *argv[])
 {
     int             PlayVoice();

@@ -19,17 +19,18 @@
  *
  * DATE      RESPONSIBLE PARTY  DESCRIPTION
  * -------------------------------------------------------------------------
- * 93/05/13  B. Dorsey      Wrote original version
+ * 93/05/13  B. Dorsey      	Wrote original version
  * 93/09/12  B. Dorsey		Changes for nautilus (no functional changes)
  * 93/09/16  R. Berry		Optimized encode()
  * 93/12/11  B. Dorsey		Modified to use fixed point arithmetic
  * 95/06/08  B. Dorsey		Renamed to sp64 from apsd
  * 95/06/25  J. A. Fingerhut	Merged both fixed point arithmetic and
- * 							floating point arithmetic versions of
- * 							SP64 and SP85 coders into one file.
+ * 				floating point arithmetic versions of
+ * 				SP64 and SP85 coders into one file.
  * 95/08/21  B. Dorsey		Added lowpass filter for sp85
  * 96/02/23  J. A. Fingerhut	Cleaned up code for clipping of samples.
- * 96/12/15  D. Miller      Minor optimization in lowpass() initialization
+ * 96/12/15  D. Milleri		Minor optimization in lowpass() initialization
+ * 04/02/29  S. Wieseckel	fixed compiler warning
  */
 
 #include <stdio.h>
@@ -39,23 +40,23 @@
 
 #include "machine.h"
 
-/*
- * There will be several places in this file containing constructs
- * like this:
- * 
- * #ifdef FIXED_POINT_ARITHMETIC
- * 
- * ... some code for fixed point version ...
- * 
- * #else /* FIXED_POINT_ARITHMETIC * /
- * 
- * ... some code for floating point version ...
- * 
- * #endif /* FIXED_POINT_ARITHMETIC * /
- *                                  ^^^
- *                          Don't eliminate this blank.  I think you
- *                          can figure out why :-)
- * 
+//*
+//* There will be several places in this file containing constructs
+//* like this:
+//* 
+//* #ifdef FIXED_POINT_ARITHMETIC
+//* 
+//* ... some code for fixed point version ...
+//* 
+//* #else /* FIXED_POINT_ARITHMETIC * /
+//* 
+//* ... some code for floating point version ...
+//* 
+//* #endif /* FIXED_POINT_ARITHMETIC * /
+//*                                  ^^^
+//*                          Don't eliminate this blank.  I think you
+//*                          can figure out why :-)
+/* 
  * will be seen.  This same file is intended to be the source file for
  * both the fixed point version of the SP64 and SP85 speech coders,
  * and the floating point version.  This symbol is also used in the

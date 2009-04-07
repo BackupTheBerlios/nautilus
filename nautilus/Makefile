@@ -7,12 +7,6 @@ MAJOR  = 1
 MINOR  = 7e
 VERSION = $(MAJOR).$(MINOR)
 
-release-tag:
-	cvs tag -R v$(MAJOR)_$(MINOR)_$(MMINOR)
-
-release-tag-force:
-	cvs tag -R -F v$(MAJOR)_$(MINOR)_$(MMINOR)
-
 
 # default C compiler
 CC= gcc
@@ -159,6 +153,12 @@ clean:
 install:
 	cp nautilus $(BINDIR)
 	cp doc/nautilus.1 $(MANDIR)/man1
+
+release-tag:
+	cvs tag -R v$(MAJOR)_$(MINOR)_$(MMINOR)
+
+release-tag-force:
+	cvs tag -R -F v$(MAJOR)_$(MINOR)_$(MMINOR)
 
 
 

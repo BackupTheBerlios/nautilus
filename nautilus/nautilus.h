@@ -184,6 +184,7 @@ struct param_t {
     NSP_HANDLE  *session;	/* NSP layer handle for comm channel */
     struct net_t {
         int     portnum;	/* which port to use */
+		int		localport;	/* which local port top use - 0 = dont care */
     } net;
     struct port_t {
 	int     speed;          /* DTE speed */

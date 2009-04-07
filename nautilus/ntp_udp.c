@@ -44,10 +44,12 @@
 #endif
 
 #include "ntp.h"
+#include "nautilus.h"
 
 #undef NTP_DEBUG
 
 static char    *default_udp_port = "12370";
+extern struct param_t params;             /* operating parameters */
 
 static char *
 serror(void)
@@ -76,6 +78,8 @@ udp_connect(NTP_HANDLE *h, char *addr)
     struct hostent     *he;
     struct servent     *se;
     struct sockaddr_in	sin;
+    struct sockaddr_in	local_sin;
+
     
     /*
 	* If host contains special punct then consider the remainder of the string
@@ -127,6 +131,19 @@ udp_connect(NTP_HANDLE *h, char *addr)
 		sin.sin_port = htons(se->s_port);
     }
     
+	/* When we want to select the local port, do a bind */
+	if (params.net.localport){
+			/* do not set sin.sin_addr, let it be 0.0.0.0 as netcat does*/
+			memset(&local_sin, 0, sizeof(local_sin));
+			local_sin.sin_family = AF_INET;
+			local_sin.sin_port = htons(params.net.localport);
+			if (bind(h->fd, (struct sockaddr *) &local_sin, sizeof local_sin)) {
+				progress(h, "bind local port", serror());
+				return -1;
+			}
+	}
+
+
     /*
 	* Save the address for working around winsock bug that
 	* won't let us call recvfrom() on a connected socket.

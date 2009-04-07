@@ -146,9 +146,9 @@ main(int argc, char *argv[])
 	
     /* parse arguments */
 #if defined(unix)
-    while ((c = getopt(argc, argv, "aAdhoOixc:e:k:l:n:p:s:v")) != -1)
+    while ((c = getopt(argc, argv, "aAdhoOixc:e:k:l:L:n:p:s:v")) != -1)
 #elif defined(_WIN32)
-	while ((c = getopt(argc, argv, "aAdhoixc:e:j:k:l:n:v")) != -1)
+	while ((c = getopt(argc, argv, "aAdhoixc:e:j:k:l:L:n:v")) != -1)
 #else
 	while ((c = getopt(argc, argv, "aAdhoxc:e:k:l:p:s:v")) != -1)
 #endif
@@ -234,6 +234,9 @@ main(int argc, char *argv[])
 				usage();
 			}
 			exit(0);
+		case 'L':
+			params.net.localport = atoi(optarg);
+			break;
 		case 'p':
 			if (strcpy(params.port.name, GetPort(optarg)) == NULL) {
 				fprintf(stderr, "%s: invalid serial port\n", optarg);
@@ -656,6 +659,7 @@ help(void)
 #endif
     fprintf(stderr, "-k <protocol> selects key exchange protocol (default=768-bit DH)\n");
     fprintf(stderr, "-l <coders|ciphers> lists available coders or ciphers\n");
+	fprintf(stderr, "-L <port number> select local port number while origionating call\n");
     fprintf(stderr, "-x suppresses startup and ring sound\n");
     fprintf(stderr, "-v verbose mode.  Currently only gives detailed coder speed testing data.\n");
 #if defined(unix) || defined(_WIN32)

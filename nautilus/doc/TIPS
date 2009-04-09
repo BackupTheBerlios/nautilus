@@ -1,4 +1,5 @@
 Modems do not connect:
+=====================
 
    if the modems do not connect but stay whistling and making ugly
    noise, try to add this command to the modem init string.
@@ -9,6 +10,62 @@ Modems do not connect:
    This is also valid with 56K modems, as 56k is not possible 
    between two modems, but only with a special peer device. 56k
    modems fall back to V34.
+
+
+Nautilus and NAT
+===============
+
+With the upcoming of router boxes (cable modems, DSL boxes) most users
+sit behind a NAT firewall and their computers use private IP adresses,
+which makes then unreachable from the internet. NAT is the standard 
+setup in Universities and Companies also. Even some internet providers 
+impose NAT on their customers, e.g. cellphone operators. 
+
+As a "peer to peer" application, nautilus - like every "peer to peer"
+application depends on the possibility to contact one party from the internet.
+
+One side behind a NAT firewall
+==============================
+
+The call must be originated by the party behind the NAT firewall
+
+Both sides are behind a NAT firewall
+====================================
+
+If both parties sit behind a NAT gateway nautilus is unusable,
+without measures. The  NAT gateway must be instructed to setup
+a "port forwarding" to the machine where nautilus is running.
+
+If one party is are able to set up a port a forwarding, there is no problem.
+To make a connection without explicitly opening a port (which you
+often are not able to) use nat-traverse (htttp://linide.sourceforge.net/nat-traverse/)
+
+This should work if the source port number of outgoing packets is not changed
+as long there is no conflict (another machine using the same source port
+number). This is the case with  "full cone" "restricted cone" and "port
+restricted cone" NAT, but not with symmetric NAT. 
+
+To determine the type of NAT and the external address of your 
+firewall use stunc ( from http://sofia-sip.sf.net/ or from
+your Linux distributor).
+
+The following example is taken from the documentation of nat-traverse and 
+adapted to nautilus.  
+
+  root@left  # PORT=60001; until \
+                 nat-traverse --quit-after-connect $PORT:right:PORT \
+               do \
+                 sleep 5 \
+               done; \
+               nautilus -o -i -L $PORT -p $PORT right
+  root@right # until \
+                 nat-traverse --quit-after-connect $PORT:left:$PORT \
+               do \
+                 sleep 5 \
+               done; \
+               nautilus -l -i -p $PORT
+
+
 
 
 

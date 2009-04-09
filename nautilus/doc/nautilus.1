@@ -16,6 +16,7 @@
 .Op Fl k Ar protocol
 .Op Fl p Ar port
 .Op Fl s Ar speed
+.Op Fl L Ar local originating port
 .Op Fl v
 .Op Fl x
 .Nm nautilus
@@ -86,6 +87,10 @@ session without dialing i.e. while talking on the Phone
 
 .Fl s Ar speed
    Serial port (DTE) speed for direct modem connection
+
+.Fl L Ar local originating port
+   local (source) port when originating a call. Needed for 
+   NAT traversal
 
 .Fl v
 Display verbose coder speed data

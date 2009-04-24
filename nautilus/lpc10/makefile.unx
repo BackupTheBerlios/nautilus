@@ -6,6 +6,10 @@
 
 # default C compiler
 CC= gcc
+AR=ar
+LD=ld
+RANLIB=ranlib
+
 
 # 
 # These definitions for CFLAGS and NAUTILUS_HOME are used when one
@@ -32,7 +36,7 @@ LIB = liblpc10.a
 .PHONY: all clean
 
 all:	$(LIB)
-	ranlib $(LIB)
+	$(RANLIB) $(LIB)
 
 $(LIB):		$(LIB)(f2clib.o)	\
 		$(LIB)(analys.o)	\

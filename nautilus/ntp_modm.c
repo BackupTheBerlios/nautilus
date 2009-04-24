@@ -52,6 +52,7 @@ static unsigned int connect_speed = 0;
 static int
 WaitFor(char *string, int wait, void (*msg_cb)(char *msg))
 {
+#ifdef UNIX
     int         c, i=0, timeout, old=-1;
     char        ibuf[80], tbuf[16];
     UINT32      start = Clock();
@@ -139,6 +140,7 @@ WaitFor(char *string, int wait, void (*msg_cb)(char *msg))
         msg_cb("");
 
     return -1;
+#endif
 }
 
 /*
@@ -153,6 +155,7 @@ WaitFor(char *string, int wait, void (*msg_cb)(char *msg))
 static int
 Connect(char *phone, char *modem_init, char *prefix, void (*msg_cb)(char *msg))
 {
+#ifdef UNIX
 #define  BUFLEN  256
     char buf[BUFLEN];
 
@@ -186,6 +189,7 @@ Connect(char *phone, char *modem_init, char *prefix, void (*msg_cb)(char *msg))
     WritePort(buf, strlen(buf));
 
     return WaitFor("CONNECT", 60, msg_cb);
+#endif
 }
 
 /*
@@ -197,6 +201,7 @@ Connect(char *phone, char *modem_init, char *prefix, void (*msg_cb)(char *msg))
 static int
 AnswerMode(int flag, void (*msg_cb)(char *msg))
 {
+#ifdef UNIX
     WritePort("AT\r", 3);
     if (WaitFor("OK", 2, NULL) < 0) {
         WritePort("AT\r", 3);
@@ -216,11 +221,13 @@ AnswerMode(int flag, void (*msg_cb)(char *msg))
         WritePort("ATA\r", 4);
         return WaitFor("CONNECT", 45, msg_cb);
     }
+#endif
 }
 
 static int
 xxioctl(NTP_HANDLE *h, char *opt, char *val)
 {
+#ifdef UNIX
     /* opt="modem_open", arg="%s,%d" (port name, port speed) */
     if ((Strcasecmp(opt, "modem_open") == 0) && val) {
 	default_modem_port = strdup(val);
@@ -237,11 +244,13 @@ xxioctl(NTP_HANDLE *h, char *opt, char *val)
     else
 	return -1;
     return 0;
+#endif
 }
 
 static int
 xxopen(NTP_HANDLE *h, char *address, long timeout)
 {
+#ifdef UNIX
     /* check args
      */
     if (!h || !h->ntp) {
@@ -286,21 +295,25 @@ xxopen(NTP_HANDLE *h, char *address, long timeout)
     }
 	sleep(1);
 
+#endif
     return 0;
 }
 
 static int
 xxclose(NTP_HANDLE *h)
 {
+#ifdef UNIX
     if (default_modem_port)
 	free(default_modem_port);
     ClosePort();
+#endif
     return(0);
 }
 
 static int
 xxput(NTP_HANDLE *h, void *buf, unsigned count, long timeout)
 {
+#ifdef UNIX
     int         i, j;
     UINT8       pkt[(NTP_MPDU+2)*2+2];
 
@@ -320,11 +333,13 @@ xxput(NTP_HANDLE *h, void *buf, unsigned count, long timeout)
         return -1;
     else
         return count;
+#endif
 }
 
 static int
 xxget(NTP_HANDLE *h, void *buf, unsigned size, long timeout)
 {
+#ifdef UNIX
     int	        i, c, r_crc;
 
     /* First incoming character should be a FRAME character */
@@ -396,6 +411,7 @@ xxget(NTP_HANDLE *h, void *buf, unsigned size, long timeout)
     }
 
     return i;
+#endif
 }
 
 NTP_CLASS ntp_modm = {

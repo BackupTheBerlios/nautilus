@@ -51,6 +51,7 @@
 static char    *default_udp_port = "12370";
 extern struct param_t params;             /* operating parameters */
 
+/* replace with strerror(errno) 
 static char *
 serror(void)
 {
@@ -59,6 +60,7 @@ serror(void)
     return (errno >= 0 && errno < sys_nerr)
 		? sys_errlist[errno] : "Error out of range";
 }
+*/
 
 static void
 progress(NTP_HANDLE *h, char *prefix, char *message)
@@ -138,11 +140,22 @@ udp_connect(NTP_HANDLE *h, char *addr)
 			local_sin.sin_family = AF_INET;
 			local_sin.sin_port = htons(params.net.localport);
 			if (bind(h->fd, (struct sockaddr *) &local_sin, sizeof local_sin)) {
-				progress(h, "bind local port", serror());
+				progress(h, "bind local port", strerror(errno));
 				return -1;
 			}
-	}
 
+	/* Add Nat traversal preamble here 
+		send traversal packets to address sin and do a rcvfrom on 
+		10 times: sendto( h->fd, NAT_TRAVERSE_PING, sizeof(NAT_TRAVERSE_PING), 
+				(const struct sockaddr *) &sin, sizeof sin )	
+		1 time: sendto( h->fd, NAT_TRAVERSE_ACK, sizeof(NAT_TRAVERSE_ACK), 
+				(const struct sockaddr *) &sin, sizeof sin )	
+		1 time: wait on NAT_TRAVERSE_ACK  with
+			ssize_t recvfrom(int s, void *buf, size_t len, int flags,
+                        struct sockaddr *from, socklen_t *fromlen);
+
+	*/
+	}
 
     /*
 	* Save the address for working around winsock bug that
@@ -192,10 +205,12 @@ udp_bind(NTP_HANDLE *h)
 	*/
     sin.sin_family = AF_INET;
     if (bind(h->fd, (struct sockaddr *) &sin, sizeof sin)) {
-		progress(h, "bind", serror());
+		progress(h, "bind", strerror(errno));
 		return -1;
     }
 	
+	/* Add Nat traversal preamble here, so we have to "sendto" some packets
+       and we have to wait for an ACK package (on bound socket)  */
     return 0;
 }
 
@@ -258,7 +273,7 @@ xxopen(NTP_HANDLE *h, char *address, long timeout)
 	*/
     flag = 1;
     if (ioctlsocket(h->fd, FIONBIO, &flag)) {
-		progress(h, "FIONBIO", serror());
+		progress(h, "FIONBIO", strerror(errno));
 		close(h->fd);
 		h->fd = -1;
 		return -1;
@@ -349,7 +364,7 @@ reread:
 			/* first packet received - do connect and save the address */
 			h->rem_addr = (void *) malloc(recvfrom_addr_len);
 			if (!h->rem_addr) {
-				progress(h, "malloc", serror());
+				progress(h, "malloc", strerror(errno));
 				return -1;
 			}
 			memcpy((char *) h->rem_addr, (char *) &recvfrom_addr,

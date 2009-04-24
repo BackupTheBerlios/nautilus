@@ -65,6 +65,15 @@ adapted to nautilus.
                done; \
                nautilus -l -i -p $PORT
 
+To traverse a friendly NAT, it may even be enough if both sides try to start
+nautilus every (say) 2 seconds in originating mode and one side then switches
+to answering mode. A special originating mode may be useful for this that would
+send UDP packets and switch to answer mode on the reception of a packet from
+the selected target. So the nat-traverse step would be integrated in nautilus.
+
+Possibly nat-traversal should be selectable for both modes so that normal
+operation starts on reception of a NAT traversal ACK package. 
+
 
 
 

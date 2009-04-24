@@ -65,6 +65,10 @@ enum soundcards { SOUNDBLASTER };
 #define DEFAULT_RING_FILE		"ring.v"
 #define DEFAULT_PORT_NO			12370
 
+/*NAT traversal constants*/
+#define NAT_TRAVERSE_PING		"NAT traverse ping"
+#define NAT_TRAVERSE_ACK		"NAT traverse ACK"
+
 /* Turnaround beep parameters */
 #define BEEP_MS				80
 #define BEEP_AMPLITUDE		25000

@@ -31,7 +31,7 @@ $(RSAREFLIB) : desc.$(O) digit.$(O) md2c.$(O) md5c.$(O) nn.$(O) prime.$(O)\
   rsa.$(O) r_encode.$(O) r_dh.$(O) r_enhanc.$(O) r_keygen.$(O) r_random.$(O)\
   r_stdlib.$(O)
 	$(LIB) r $@ $?
-	ranlib $@
+	$(RANLIB) $@
 
 rdemo.$(O) : $(RDEMODIR)rdemo.c $(RSAREFDIR)global.h $(RSAREFDIR)rsaref.h
 	$(CC) $(CFLAGS) $(RDEMODIR)rdemo.c

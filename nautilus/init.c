@@ -453,6 +453,7 @@ CoderSpeedTest(int min_test_duration_ms, int verbose_coder_speed_testing)
 					max_single_frame_time = single_frame_time;
 				}
 				last_duration = duration;
+				if ( frames_processed > 10000000  ) break;
 				
 			} while (duration < min_test_duration_ms);
 			

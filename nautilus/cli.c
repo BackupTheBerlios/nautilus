@@ -179,13 +179,10 @@ main(int argc, char *argv[])
 			break;
 #if defined(unix) || defined(_WIN32)
 		case 'i':
-			params.net_flag = TRUE;
-			/* Setup/override some defaults */
-			params.net.portnum = DEFAULT_PORT_NO;
-			params.rp_timeout = 30;
-			params.sp_timeout = 30;
+			net_settings();
 			break;
 		case 'n':
+			net_settings();
 			params.net.portnum = atoi(optarg);
 			break;
 #endif
@@ -235,6 +232,7 @@ main(int argc, char *argv[])
 			}
 			exit(0);
 		case 'L':
+			net_settings();
 			params.net.localport = atoi(optarg);
 			break;
 		case 'p':
@@ -793,3 +791,15 @@ debug_putc(char c)
     putc(c, stderr);
     fflush(stderr);
 }
+
+void
+net_settings()
+{
+    params.net_flag = TRUE;
+	/* Setup/override some defaults */
+	if( params.net.portnum == 0)
+		params.net.portnum = DEFAULT_PORT_NO;
+	params.rp_timeout = 30;
+	params.sp_timeout = 30;
+}
+

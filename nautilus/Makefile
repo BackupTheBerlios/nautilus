@@ -74,7 +74,8 @@ NAUTILUS_COMM_OBJ=	bitstrm.o	\
 		${NTP_CLASSES:%=%.o}
 
 
-NAUTILUS_WIN_OBJ=	win32.o \
+NAUTILUS_WIN_OBJ=	\
+			win32.o \
 			win32ai.o \
 			win32ao.o
 
@@ -159,11 +160,13 @@ linux:
 
 windows: $(XCOMP)dlltool   
 	# runs only if XCOMP ist set to the mingw prefix!
-	$(MAKE) librsaref.a  CC=$(CC)  LD=$(LD)  AR=$(AR)  RANLIB=$(RANLIB) 
+	$(MAKE) librsaref.a  CC=$(CC)  LD=$(LD)  AR=$(AR)  RANLIB=$(RANLIB) \
+	#CFLAGS+="-D_WIN32"
+	#		CFLAGS+="-DWIN32 -DDNDEBUG -DWINDOWS" 
 	$(MAKE) liblpc10.a   CC=$(CC)  LD=$(LD)  AR=$(AR)  RANLIB=$(RANLIB)
 	$(MAKE) nautilus  \
 	NAUTILUS_OBJ="$(NAUTILUS_COMM_OBJ) $(NAUTILUS_WIN_OBJ)" \
-	CFLAGS=" -DWIN32 -DORDER_DCBA -DCLIP $(INCLUDES)" \
+	CFLAGS=" -DWIN32 -DDEBUG -D_CONSOLE -D_MBCS -DORDER_DCBA -DCLIP $(INCLUDES)" \
 	LIBS+=-liberty LDFLAGS+=-L/usr/i586-mingw32msvc/lib \
 	LIBS+="-lwsock32 -lwinmm" 
 	make nautilus.zip
@@ -191,7 +194,7 @@ liblpc10.a:
 	$(MAKE) -C lpc10 -f makefile.unx NAUTILUS_HOME=.. 
 	mv lpc10/liblpc10.a liblpc10.a
 
-nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz
+nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz nautilus
 	mv nautilus nautilus.exe
 	gunzip -dc /usr/share/doc/mingw32-runtime/mingwm10.dll.gz >mingwm10.dll
 	zip nautilus.zip mingwm10.dll nautilus.exe

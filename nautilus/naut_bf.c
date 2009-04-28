@@ -14,7 +14,9 @@
 #ifdef _WIN32
 #include <memory.h>
 #endif
-
+#ifdef UNIX	
+#include <string.h>
+#endif
 #include "nautilus.h"		/* get nautilus datatypes (UINT32, etc.) */
 
 #include "blowfish.h"

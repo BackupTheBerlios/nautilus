@@ -200,7 +200,8 @@ nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz nautilus
 	zip nautilus.zip mingwm10.dll nautilus.exe
 
 clean:
-	-rm -f core $(NAUTILUS_ALL_OBJ) $(NUKE_OBJ) liblpc10.a librsaref.a nautilus nuke unnuke
+	-rm -f core $(NAUTILUS_ALL_OBJ) $(NUKE_OBJ) 
+	-rm -f liblpc10.a librsaref.a nautilus nuke unnuke nautilus.zip
 	(cd rsaref; $(MAKE) -f makefile.unx clobber)
 	(cd lpc10; $(MAKE) -f makefile.unx clobber)
 

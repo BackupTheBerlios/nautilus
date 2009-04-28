@@ -70,6 +70,8 @@ extern struct negotiate_t negotiate;/* capability negotiation parameters */
 extern char    *optarg;
 extern int      optind;
 
+/* forward declarations */
+void net_settings();
 
 #define CONFIGFILENAMLEN 256
 
@@ -792,7 +794,7 @@ debug_putc(char c)
     fflush(stderr);
 }
 
-void
+void 
 net_settings()
 {
     params.net_flag = TRUE;

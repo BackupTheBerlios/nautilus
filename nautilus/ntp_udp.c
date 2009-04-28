@@ -272,7 +272,7 @@ xxopen(NTP_HANDLE *h, char *address, long timeout)
     /* set non-blocking IO mode   (why?)
 	*/
     flag = 1;
-    if (ioctlsocket(h->fd, FIONBIO, &flag)) {
+    if (ioctlsocket(h->fd, FIONBIO, (char *) &flag)) {
 		progress(h, "FIONBIO", strerror(errno));
 		close(h->fd);
 		h->fd = -1;

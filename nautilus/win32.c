@@ -258,7 +258,6 @@ WriteAudio(UINT8 * buf, int n)
 int
 AudioFlow(enum flow direction)
 {
-	
 	switch (audio_mode) {
 	case AM_CLOSED:
 		break;
@@ -402,8 +401,6 @@ PlayVoice(char* voice_fname)
 {
     int fd, nb;
     UINT8 audio_buf[1024];
-	
-
 
 	if (win32ao_open(8000, 0.5) == -1)
 		return FAIL;

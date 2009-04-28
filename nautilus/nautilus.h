@@ -24,7 +24,9 @@
 #include "machine.h"
 
 /* Debug level */
+#ifndef DEBUG
 #define DEBUG       0
+#endif
 
 /* Program definitions */
 #define NCODERS				4

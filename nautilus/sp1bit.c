@@ -35,8 +35,12 @@
 
 #include <stdio.h>
 #ifdef _WIN32
-#include <memory.h>
+    #include <memory.h>
 #endif
+#ifdef UNIX	
+    #include <string.h>
+#endif
+
 
 #include "machine.h"
 

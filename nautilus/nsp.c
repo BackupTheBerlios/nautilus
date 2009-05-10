@@ -30,6 +30,9 @@
 #define	NSP_TYPE_UNREL	0		/* unreliable */
 #define NSP_TYPE_REL	1		/* reliable */
 #define	NSP_TYPE_ACK	2		/* acknowledge */
+#define NSP_TYPE_NAT	3		/* not a NSP packet, used for NAT traversal,
+								   NSP should ignore it. If doing NAT traversal,
+								   use packets with bits 6,7 set in first byte */
 
 
 /* structure of a NSP packet

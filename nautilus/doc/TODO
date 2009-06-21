@@ -66,3 +66,5 @@ o  makefile.dos should have the location of RSAREF generalized, as it
 o  setup 24/7 echo server(s) that would replay your voice after some
    delay
 
+o SPEEX would be a nice coder/encoder. We had to use a fixed API version
+  or include full SPEEX sources to stay stable. 

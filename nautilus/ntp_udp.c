@@ -51,16 +51,6 @@
 static char    *default_udp_port = "12370";
 extern struct param_t params;             /* operating parameters */
 
-/* replace with strerror(errno) 
-static char *
-serror(void)
-{
-    extern int sys_nerr;
-    extern __const char *__const sys_errlist[];
-    return (errno >= 0 && errno < sys_nerr)
-		? sys_errlist[errno] : "Error out of range";
-}
-*/
 
 static void
 progress(NTP_HANDLE *h, char *prefix, char *message)

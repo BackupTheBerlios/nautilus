@@ -1,8 +1,27 @@
-Release Notes for Nautilus V1.7C
+Release Notes for Nautilus V1.7D
 
-This release incorporates some minor patches needed for linux
-and modem acces. A later release will replace the crypto library
-to makes nautilus completely free software.
+
+
+TODO WISHLIST
+
+
+o move to openssl
+o integrate speex
+o get nautilus into debian (as nautilus-securephone)
+o how hard is duplex - does it imply multithreading ?
+
+Changes since V1.7C:
+
+o nautilus is maintained by Johannes Poehlmann and Stefan
+  Wieseckel on berlios. 
+o remove lots of compiler warnings
+o compilation of windows binary with gcc
+o NAT traversal support (rendezvous of 2 nautilus apps both behinds
+	  a firewall, will not work in every NAT, see "doc/TIPS"): 
+	o determine Source port when originating
+	o (in progress) integrate simple nat traversal code by
+	  adding a "listen mode where you can send UDP "null"
+	  packets to the originating side.
 
 Changes since V1.7B:
 

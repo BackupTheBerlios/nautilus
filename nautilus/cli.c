@@ -181,10 +181,10 @@ main(int argc, char *argv[])
 			break;
 #if defined(unix) || defined(_WIN32)
 		case 'i':
-			net_settings();
+			params.net_flag = TRUE;
 			break;
 		case 'n':
-			net_settings();
+			params.net_flag = TRUE;
 			params.net.portnum = atoi(optarg);
 			break;
 #endif
@@ -234,7 +234,7 @@ main(int argc, char *argv[])
 			}
 			exit(0);
 		case 'L':
-			net_settings();
+            params.net_flag = TRUE;
 			params.net.localport = atoi(optarg);
 			break;
 		case 'p':
@@ -256,6 +256,10 @@ main(int argc, char *argv[])
 		}
 	
 	/* Finish processing arguments */
+	if ( params.net_flag ) {
+		net_settings();
+	}
+
 	if (params.mode == ORIGINATE) {
 		if (optind + 1 == argc) {
 #if defined(unix) || defined(_WIN32)
@@ -797,7 +801,6 @@ debug_putc(char c)
 void 
 net_settings()
 {
-    params.net_flag = TRUE;
 	/* Setup/override some defaults */
 	if( params.net.portnum == 0)
 		params.net.portnum = DEFAULT_PORT_NO;

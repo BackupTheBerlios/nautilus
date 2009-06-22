@@ -1,0 +1,8 @@
+  sox -1 -u -r 8000 -c 1 -n ring2.raw synth 0.4 sine 440 synth 0.4 sine amod 44 vol 0.4 -
+  sox -1 -u -r 8000 -c 1 -n ring3.raw synth 0.7 sine 440 synth 0.7 sine amod 44 vol 0.0 -
+  sox -1 -u -r 8000 -c 1 -n ring4.raw synth 0.7 sine 440 synth 0.7 sine amod 44 vol 0.4 -
+  cat ring2.raw ring3.raw ring4.raw >logon.v
+
+  sox -1 -u -r 8000 -c 1 -n ring.raw synth 0.4 sine 880 synth 0.4 sine amod 88 vol 0.4 -
+  cat ring.raw ring3.raw ring.raw >ringx.raw
+

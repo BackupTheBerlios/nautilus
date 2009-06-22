@@ -63,8 +63,8 @@ enum soundcards { SOUNDBLASTER };
 #define DEFAULT_MODEM_RESET		"Z"
 #define DEFAULT_CODER_INDEX     0
 #define DEFAULT_UPGRADE_FILE    "upgrade"
-#define DEFAULT_LOGON_FILE		"logon.v"
-#define DEFAULT_RING_FILE		"ring.v"
+#define DEFAULT_LOGON_FILE		"logon_new.v"
+#define DEFAULT_RING_FILE		"ring_new.v"
 #define DEFAULT_PORT_NO			12370
 
 /*NAT traversal constants*/

@@ -285,6 +285,12 @@ main(int argc, char *argv[])
 			fprintf(stderr, "Extraneous argument(s).\n\n");
 			usage();
 		}
+
+		if ( params.net.localport != 0 ){
+				fprintf(stderr, "-L makes no sense with -a\n\n");
+					usage();
+		}
+
 	}
 	else {
 		credits();
@@ -342,7 +348,12 @@ main(int argc, char *argv[])
 
 	/* Print startup information. */
 	if (params.net_flag == TRUE) {
-		printf("Selected Port : %5d\t\t", params.net.portnum);
+		if ( params.net.localport != 0 ){
+			printf("Selected Source Port : %5d\t\ Destination Port : %5d\t",
+					params.net.localport, params.net.portnum);
+		} else {
+				printf("Selected Port : %5d\t\t", params.net.portnum);
+		}
 		printf("Network Protocol : %s\n", "UDP");
 	}
 	else {

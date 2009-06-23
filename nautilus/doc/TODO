@@ -52,6 +52,7 @@ o  Turn echoing off for Unix version when running in Talk() function.
 o  Make config file parser more user friendly.
 
 o  Fix bug that prevents users on phone from starting Nautilus up directly.
+	DONE
 
 o  Mute function.
 

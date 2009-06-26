@@ -38,7 +38,7 @@ a "port forwarding" to the machine where nautilus is running.
 
 If one party is are able to set up a port a forwarding, there is no problem.
 To make a connection without explicitly opening a port (which you
-often are not able to) use nat-traverse (htttp://linide.sourceforge.net/nat-traverse/)
+often are not able to) use nat-traverse (http://linide.sourceforge.net/nat-traverse/)
 
 This should work if the source port number of outgoing packets is not changed
 as long there is no conflict (another machine using the same source port

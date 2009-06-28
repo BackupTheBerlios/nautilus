@@ -199,7 +199,7 @@ liblpc10.a:
 nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz nautilus
 	mv nautilus nautilus.exe
 	gunzip -dc /usr/share/doc/mingw32-runtime/mingwm10.dll.gz >mingwm10.dll
-	zip nautilus.zip mingwm10.dll nautilus.exe
+	zip nautilus.zip mingwm10.dll ring_new.v logon_new.v nautilus.exe
 
 clean:
 	-rm -f core $(NAUTILUS_ALL_OBJ) $(NUKE_OBJ) 

@@ -1,9 +1,6 @@
 Release Notes for Nautilus V1.7D
 
-
-
-TODO WISHLIST
-
+WISHLIST
 
 o move to openssl
 o integrate speex
@@ -20,8 +17,9 @@ o NAT traversal support (rendezvous of 2 nautilus apps both behinds
 	  a firewall, will not work in every NAT, see "doc/TIPS"): 
 	o determine Source port when originating
 	o (in progress) integrate simple nat traversal code by
-	  adding a "listen mode where you can send UDP "null"
+	  adding a "listen" mode where you can send UDP "null"
 	  packets to the originating side.
+o new ring and logon tones (US telephone style).
 
 Changes since V1.7B:
 
@@ -95,7 +93,7 @@ o ntp_udp.c required changes to work with the winsock DLL.
   a connected socket.
 
 
-TODO:
+TODO: (mostly done..)
 
 Hopefully some of this stuff will get done before the 1.7A release
 makes it to the world!

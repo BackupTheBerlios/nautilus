@@ -69,3 +69,21 @@ o  setup 24/7 echo server(s) that would replay your voice after some
 
 o SPEEX would be a nice coder/encoder. We had to use a fixed API version
   or include full SPEEX sources to stay stable. 
+  1.2rc1 seems to have been settled since 2008, and they write that the 
+  API will be stable for the final 1.2. So we use 1.2rc1. 
+
+	When building ourself you just unpack the sources in a subdir  "speex", 
+    do (cd speex; ./configure; make)
+	then link against speex/libspeex/libspeex.a
+	find the includes in speex/includes/speex.	
+	Linux distro makers will use their prepackaged devel packages and
+	will not build speex themselves, so we will make the lib and include
+	locations overridable. 
+	First check the API and how to interface to nautilus.
+		init.c fill in constants like frame length coded and unencoded.
+		write init/encode/decode functions according to the other codecs.
+			see struct coder_t in nautilus.h
+			there is a Bits type in speex. do we want to use the Bits 
+			structure or only the bit-buffer ? (beware of constant 
+			slack or header portions that would allow known plain text attacks)
+		We wil not use VBR as nautilus wants a constant bit rate. (in fact ?)

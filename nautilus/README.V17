@@ -20,6 +20,7 @@ o NAT traversal support (rendezvous of 2 nautilus apps both behinds
 	  adding a "listen" mode where you can send UDP "null"
 	  packets to the originating side.
 o new ring and logon tones (US telephone style).
+o commit emails set up
 
 Changes since V1.7B:
 

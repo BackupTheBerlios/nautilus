@@ -4,7 +4,7 @@
 # SCCS ID: @(#)makefile.unx 1.14 96/05/25
 #
 MAJOR  = 1
-MINOR  = 7e
+MINOR  = 8rc1 
 VERSION = $(MAJOR).$(MINOR)
 
 #XCOMP=/usr/bin/i586-mingw32msvc-

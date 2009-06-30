@@ -578,11 +578,15 @@ print_dh_verification (char *agreed_key, int length)
     sha_memory(agreed_key, length, digest);
 #endif
     	
-    fprintf (stderr, "DH verification code: %02x%02x %02x%02x\n",
+    fprintf (stderr, "*** DH verification code: %02x%02x %02x%02x \n",
                 (unsigned int)digest[1] & 0xFF,		/* was [7] */
                ((unsigned int)digest[3] >> 8) & 0xFF,	/* was [14] */
                ((unsigned int)digest[1] >> 16) & 0xFF,	/* was [5] */
                ((unsigned int)digest[3] >> 24) & 0xFF );/* was [12] */
+    fprintf (stderr, "\n *** please read this code to the the other party ! ***\n"
+		     "If your code differs form the other party, your\n"
+		     "conversation is likely to be listened in via a\n"
+		     "'man in the middle attack'\n");
 
     if ( params.key_ex_only )
     {

@@ -1,5 +1,3 @@
-Release Notes for Nautilus V1.7D
-
 WISHLIST
 
 o move to openssl
@@ -7,10 +5,17 @@ o integrate speex
 o get nautilus into debian (as nautilus-securephone)
 o how hard is duplex - does it imply multithreading ?
 
-Changes since V1.7C:
+Changes in Nautilus Version 1.8rc2
+
+o complete release building
+o build source releases
+o prominent warning to read DH verification to the other party
+o reworked Changelog
+
+Changes in Nautilus Version 1.8rc1
 
 o nautilus is maintained by Johannes Poehlmann and Stefan
-  Wieseckel on berlios. 
+Wieseckel on berlios. 
 o remove lots of compiler warnings
 o compilation of windows binary with gcc
 o NAT traversal support (rendezvous of 2 nautilus apps both behinds
@@ -22,7 +27,7 @@ o NAT traversal support (rendezvous of 2 nautilus apps both behinds
 o new ring and logon tones (US telephone style).
 o commit emails set up
 
-Changes since V1.7B:
+Changes in Nautilus Version 1.7c
 
 o Nautilus is now maintained by the Secure Telephony Working 
   Group Erlangen (Germany) and Johannes Poehlmann. 
@@ -39,9 +44,8 @@ o When compiled for Unix, look for configuration files
 o Allow to "go secure" with the modem while in a phone call
 
 
-Release Notes for Nautilus V1.7B
+Changes in Nautilus Version  1.7B
 
-Changes since V1.7A:
 
 o Fixed possible variable initialization bug in win32.c
 
@@ -52,9 +56,8 @@ o Fixed bug in Unix ReadAudio() function.
 o Windows version stress tested for memory leaks (none found)
 
 
-Release Notes for Nautilus V1.7A
+Changes in Nautilus Version   1.7A
 
-Changes since V1.6A:
 
 o Added support for win32 (tested on Win95 and WinNT)
   This involved the creation of the modules win32.c which

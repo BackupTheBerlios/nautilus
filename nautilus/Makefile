@@ -5,7 +5,7 @@
 #
 MAJOR  = 1
 MINOR  = 8r
-MMINOR = c1 
+MMINOR = c1
 VERSION = $(MAJOR).$(MINOR)
 
 #XCOMP=/usr/bin/i586-mingw32msvc-
@@ -30,6 +30,7 @@ CFLAGS   = -pipe $(COPT) $(WARNINGS)
 # Default install Locations
 BINDIR = /usr/local/bin
 MANDIR = /usr/local/man 
+SHAREDIR = /usr/share/nautilus-securephone
 
 # blank separated list of NTP class module base names
 NTP_CLASSES=	ntp_udp ntp_modm
@@ -197,11 +198,16 @@ liblpc10.a:
 	$(MAKE) -C lpc10 -f makefile.unx NAUTILUS_HOME=.. 
 	mv lpc10/liblpc10.a liblpc10.a
 
-nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz nautilus
+nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz windows
 	mv nautilus nautilus.exe
 	gunzip -dc /usr/share/doc/mingw32-runtime/mingwm10.dll.gz >mingwm10.dll
 	(cd ..; zip nautilus.zip nautilus/mingwm10.dll nautilus/ring_new.v \
 		nautilus/logon_new.v nautilus/nautilus.exe)
+
+nautilus.linux.zip: nautilus
+	(cd ..; zip nautilus.linux.zip nautilus/ring_new.v \
+	 	nautilus/logon_new.v nautilus/nautilus )
+
 
 clean:
 	-rm -f core $(NAUTILUS_ALL_OBJ) $(NUKE_OBJ) 
@@ -212,6 +218,7 @@ clean:
 install:
 	cp nautilus $(BINDIR)
 	cp doc/nautilus.1 $(MANDIR)/man1
+	cp -p logon_new.v ring_new.v $(SHAREDIR)
 
 release-tag:
 	cvs tag -R v$(MAJOR)_$(MINOR)_$(MMINOR)
@@ -219,7 +226,12 @@ release-tag:
 release-tag-force:
 	cvs tag -R -F v$(MAJOR)_$(MINOR)_$(MMINOR)
 
-
+source-release:
+	mkdir -p tmp
+	cvs export -d tmp -r v$(MAJOR)_$(MINOR)_$(MMINOR) nautilus
+	mv tmp nautilus-$(MAJOR).$(MINOR)$(MMINOR)
+	tar -czf nautilus-$(MAJOR).$(MINOR)$(MMINOR).tar.gz nautilus-$(MAJOR).$(MINOR)$(MMINOR)
+	rm -rf nautilus-$(MAJOR).$(MINOR)$(MMINOR)
 
 # Dependencies
 nautilus.h: machine.h

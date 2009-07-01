@@ -6,7 +6,8 @@
 MAJOR  = 1
 MINOR  = 8
 MMINOR = rc2
-VERSION = $(MAJOR).$(MINOR)
+VERSION = $(MAJOR).$(MINOR)$(MMINOR)
+VERSIONNAME = nautilus-$(MAJOR).$(MINOR)$(MMINOR)
 
 #XCOMP=/usr/bin/i586-mingw32msvc-
 # default C compiler
@@ -201,12 +202,18 @@ liblpc10.a:
 nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz nautilus
 	mv nautilus nautilus.exe
 	gunzip -dc /usr/share/doc/mingw32-runtime/mingwm10.dll.gz >mingwm10.dll
-	(cd ..; zip nautilus.zip nautilus/mingwm10.dll nautilus/ring_new.v \
-		nautilus/logon_new.v nautilus/nautilus.exe)
+	export DIR=basename $(shell pwd); \
+	(export DIR=`basename $$PWD`; \
+	 cd ..; zip nautilus.zip $${DIR}/mingwm10.dll $${DIR}/ring_new.v \
+		$${DIR}/logon_new.v $${DIR}/nautilus.exe)
+
+# if in a working copy: pack "nautilus" else "nautilus-something"
 
 nautilus.linux.zip: nautilus
-	(cd ..; zip nautilus.linux.zip nautilus/ring_new.v \
-	 	nautilus/logon_new.v nautilus/nautilus )
+	(export DIR=`basename $$PWD`; \
+	cd ..; rm nautilus.linux.zip; \
+	zip nautilus.linux.zip $${DIR}/ring_new.v \
+	$${DIR}/logon_new.v $${DIR}/nautilus )
 
 
 clean:
@@ -226,12 +233,14 @@ release-tag:
 release-tag-force:
 	cvs tag -R -F v$(MAJOR)_$(MINOR)_$(MMINOR)
 
-source-release:
+source-release-dir:
 	mkdir -p tmp
 	cvs export -d tmp -r v$(MAJOR)_$(MINOR)_$(MMINOR) nautilus
-	mv tmp nautilus-$(MAJOR).$(MINOR)$(MMINOR)
-	tar -czf nautilus-$(MAJOR).$(MINOR)$(MMINOR).tar.gz nautilus-$(MAJOR).$(MINOR)$(MMINOR)
-	rm -rf nautilus-$(MAJOR).$(MINOR)$(MMINOR)
+	mv tmp $(VERSIONNAME)
+
+source-release: source-release-dir
+	tar -czf $(VERSIONNAME).tar.gz $(VERSIONNAME)
+	rm -rf $(VERSIONNAME)
 
 # Dependencies
 nautilus.h: machine.h

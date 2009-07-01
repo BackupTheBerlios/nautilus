@@ -4,8 +4,8 @@
 # SCCS ID: @(#)makefile.unx 1.14 96/05/25
 #
 MAJOR  = 1
-MINOR  = 8r
-MMINOR = c1
+MINOR  = 8
+MMINOR = rc2
 VERSION = $(MAJOR).$(MINOR)
 
 #XCOMP=/usr/bin/i586-mingw32msvc-
@@ -198,7 +198,7 @@ liblpc10.a:
 	$(MAKE) -C lpc10 -f makefile.unx NAUTILUS_HOME=.. 
 	mv lpc10/liblpc10.a liblpc10.a
 
-nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz windows
+nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz nautilus
 	mv nautilus nautilus.exe
 	gunzip -dc /usr/share/doc/mingw32-runtime/mingwm10.dll.gz >mingwm10.dll
 	(cd ..; zip nautilus.zip nautilus/mingwm10.dll nautilus/ring_new.v \

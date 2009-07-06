@@ -6,7 +6,7 @@ Group       	: Multimedia/Audio
 Summary     	: secure dialup/IP voice phone
 Copyright   	: 1999 Ed Casas; GPL
 Packager    	: nautilus Secure Phone Maintainers http://nautilus.berlios.de 
-Source        	: http://www.franken.de/crypt/nautilus/nautilus-1.8rc2.tar.gz
+Source        	: http://prdownload.berlios.de/nautilus/nautilus-1.8rc2.linux.zip
 Patch0		: nautilus-1.8rc2.sounddir.patch
 BuildRoot   	: /tmp/%{name}-%{version}
 

@@ -75,6 +75,34 @@ Possibly nat-traversal should be selectable for both modes so that normal
 operation starts on reception of a NAT traversal ACK package. 
 
 
+Using nautilus as a cell phone / mobile phone encryptor
+========================================================
+
+Many GSM cell phones can be used as a modem. They can be connected
+to the PC via a serial or USB data cable or via Bluetoth. nautilus
+can be used in "modem mode" between 2 cell phones. As you pay for 
+a GSM data call (CSD mode), the telephone company can not complain.
+
+Your PC is NOT connected to the internet. Modem mode is not (yet)
+possible in nautilus for Windows, you will have to use real GSM 
+dial up networking, i.e. Internet via your Cellphone.
+
+To integrate your GSM phone as a modem into Linux, you have to type
+as root:
+
+Get Address of GSM phone: (looks like 00:11:22:33:44:55 )
+        hcitool scan
+get "RFCOMM channel"
+	sdptool search DUN
+connect mobile phone with address 00:11:22:33:44:55 and RFCOMM channel 3 to /dev/rfcomm0:
+
+		  rfcomm bind 0 00:12:62:03:71:D7 3
+
+now Linux can access your mobile phone as a modem under /dev/rfcomm0
+
+We have tested (TODO!) nokia 6520 and a nokia XXXX with nautilus for Linux
+
+
 
 
 

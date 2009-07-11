@@ -363,8 +363,13 @@ main(int argc, char *argv[])
 	
 	if (vsound && !  params.key_ex_only ) {
 		/* Play logon file unless supressed. */
+		#ifdef _WIN32
+		PlayLogon();
+
+		#else
 		if (PlayVoice(params.logon_file) == FAIL)
 			fprintf(stderr, "%s not found", params.logon_file);
+		#endif
 	}
 	
 	if ((params.crypto.keyexch_type == PASSPHRASE) &&
@@ -584,8 +589,12 @@ main(int argc, char *argv[])
 			error(MSG_FATAL, "Could not initialize audio device");
 			/* NOTREACHED */
 		}
+        #ifdef _WIN32
+        PlayRing();
+        #else
 		if (PlayVoice(params.ring_file) == FAIL)
 			fprintf(stderr, "%s not found", params.ring_file);
+		#endif
 		CloseAudio();                   /* close the audio device */
 	}
 	

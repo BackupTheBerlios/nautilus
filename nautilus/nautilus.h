@@ -358,3 +358,6 @@ void	ecb_decrypt(struct key_t *k, BLOCK *data);
 void	random_init(UINT8 *data, int len);
 void	random_bytes(UINT8 *data, int len);
 int		FindKeyExch(char *);
+
+
+#define MIN(A,B) ( ( A > B ) ? ( B ) : ( A ) )

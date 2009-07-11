@@ -21,6 +21,11 @@
 #include "machine.h"
 #include "nautilus.h"
 #include "win32a.h"
+#include <assert.h>
+
+
+#include <stdint.h>
+#include "winsounds.h"
 
 extern struct param_t params;	/* operating parameters */
 
@@ -418,7 +423,48 @@ PlayVoice(char* voice_fname)
 		return FAIL;
 }
 
+/* play logon sound from internal array */
+int
+PlayLogon(){
+	int nb,index,size;
+	UINT8 audio_buf[1024];
+	
+	index=size=0;
 
+    if (win32ao_open(8000, 0.5) == -1)
+        return FAIL;
+	size=sizeof(logonSoundData); nb=1;
+	assert(size>10);
+	while ( nb>0 ){
+		nb=MIN((size-index)-1,sizeof audio_buf);
+		memcpy(audio_buf,logonSoundData+index,nb);
+		win32ao_write(audio_buf, nb);
+		index+= nb;
+	}
+    win32ao_close();
+	return SUCCESS;
+}	
+
+/* play ring sound from internal array */
+int
+PlayRing(){
+	int nb, index,size=0;
+	UINT8 audio_buf[1024];
+
+	index=size=0;
+    if (win32ao_open(8000, 0.5) == -1)
+        return FAIL;
+	size=sizeof(ringSoundData);
+	assert(size>10);
+	while ( nb > 0 ){
+		nb=MIN((size-index)-1,sizeof audio_buf);
+		memcpy(audio_buf,ringSoundData+index,nb);
+		win32ao_write(audio_buf, nb);
+		index+= nb;
+	}
+    win32ao_close();
+	return SUCCESS;
+}	
 
 /*
 

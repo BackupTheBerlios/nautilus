@@ -164,8 +164,10 @@ linux:
 	NAUTILUS_OBJ="$(NAUTILUS_COMM_OBJ) $(NAUTILUS_UNX_OBJ)" \
 	CFLAGS+=" -DUNIX -DORDER_DCBA -DCLIP $(INCLUDES)"
 
-windows: $(XCOMP)dlltool   
+windows: bin2array $(XCOMP)dlltool 
 	# runs only if XCOMP ist set to the mingw prefix!
+	./bin2array "uint8_t logonSoundData "< logon_new.v >winsounds.h 	
+	./bin2array "uint8_t ringSoundData "< ring_new.v >>winsounds.h 	
 	$(MAKE) librsaref.a  CC=$(CC)  LD=$(LD)  AR=$(AR)  RANLIB=$(RANLIB) \
 	#CFLAGS+="-D_WIN32"
 	#		CFLAGS+="-DWIN32 -DDNDEBUG -DWINDOWS" 

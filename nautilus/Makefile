@@ -177,7 +177,7 @@ windows: bin2array $(XCOMP)dlltool
 	CFLAGS=" -DWIN32 -DDEBUG -D_CONSOLE -D_MBCS -DORDER_DCBA -DCLIP $(INCLUDES)" \
 	LIBS+=-liberty LDFLAGS+=-L/usr/i586-mingw32msvc/lib \
 	LIBS+="-lwsock32 -lwinmm" 
-	make nautilus.zip
+	mv nautilus nautilus.exe
 
 # recursive Call of this Makefile with CC possibly redefined.
 nautilus: $(NAUTILUS_OBJ)
@@ -202,8 +202,8 @@ liblpc10.a:
 	$(MAKE) -C lpc10 -f makefile.unx NAUTILUS_HOME=.. 
 	mv lpc10/liblpc10.a liblpc10.a
 
+# The zip file is no longer needed as we build a standalone exe file
 nautilus.zip: /usr/share/doc/mingw32-runtime/mingwm10.dll.gz nautilus
-	mv nautilus nautilus.exe
 	gunzip -dc /usr/share/doc/mingw32-runtime/mingwm10.dll.gz >mingwm10.dll
 	export DIR=basename $(shell pwd); \
 	(export DIR=`basename $$PWD`; \

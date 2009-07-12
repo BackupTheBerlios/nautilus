@@ -3,10 +3,10 @@ Name        	: nautilus
 Version     	: 1.8rc2
 Release     	: 1
 Group       	: Multimedia/Audio
-Summary     	: secure dialup/IP voice phone
-Copyright   	: 1999 Ed Casas; GPL
+Summary     	: secure dialup/IP voice phone	
+License			: proprietary / free for non commercial use
 Packager    	: nautilus Secure Phone Maintainers http://nautilus.berlios.de 
-Source        	: http://prdownload.berlios.de/nautilus/nautilus-1.8rc2.linux.zip
+Source        	: http://prdownload.berlios.de/nautilus/nautilus-1.8rc2.tar.gz
 Patch0		: nautilus-1.8rc2.sounddir.patch
 BuildRoot   	: /tmp/%{name}-%{version}
 
@@ -17,6 +17,8 @@ phone lines or network links.  It requires a PC or Sun Sparcstation with
 speakers and microphone.  Additionally, a 4800 bps or faster modem or 
 IP network connection to another computer running nautilus is required.
 
+------
+Authors: William Dorsey, Andrew Fingerhut, et al.
 %Prep
 ###%setup -n %{name}-%{Version}
 %setup -n %{name}-%{version}

@@ -250,6 +250,8 @@ src-rpm: source-release
 	cp $(VERSIONNAME).tar.gz $(RPMDIR)/SOURCES
 	rpmbuild -bs RPM/nautilus.spec	
 
+bin-rpm: src-rpm
+	rpmbuild -bb RPM/nautilus.spec
 
 # Dependencies
 nautilus.h: machine.h

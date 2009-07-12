@@ -1,12 +1,12 @@
 
 Name        	: nautilus
-Version     	: 1.8rc2
+Version     	: 1.8rc3
 Release     	: 1
 Group       	: Multimedia/Audio
 Summary     	: secure dialup/IP voice phone	
 License			: proprietary / free for non commercial use
 Packager    	: nautilus Secure Phone Maintainers http://nautilus.berlios.de 
-Source        	: http://prdownload.berlios.de/nautilus/nautilus-1.8rc2.tar.gz
+Source        	: http://prdownload.berlios.de/nautilus/%{name}-%{version}.tar.gz
 BuildRoot   	: /tmp/%{name}-%{version}
 
 %define _topdir    /tmp/%{name}-%{version}-build

@@ -7,10 +7,11 @@ Summary     	: secure dialup/IP voice phone
 License			: proprietary / free for non commercial use
 Packager    	: nautilus Secure Phone Maintainers http://nautilus.berlios.de 
 Source        	: http://prdownload.berlios.de/nautilus/nautilus-1.8rc2.tar.gz
-Patch0		: nautilus-1.8rc2.sounddir.patch
 BuildRoot   	: /tmp/%{name}-%{version}
 
+%define _topdir    /tmp/%{name}-%{version}-build
 %define SHAREDIR /usr/share/nautilus-securephone
+
 %Description
 Nautilus allows half-duplex encrypted-voice conversation over standard 
 phone lines or network links.  It requires a PC or Sun Sparcstation with 
@@ -22,7 +23,8 @@ Authors: William Dorsey, Andrew Fingerhut, et al.
 %Prep
 ###%setup -n %{name}-%{Version}
 %setup -n %{name}-%{version}
-%patch0
+echo 'LOGON_FILE = "%{SHAREDIR}/logon_new.v"' >>nautilus.cfg
+echo 'RING_FILE = "%{SHAREDIR}/ring_new.v"'   >>nautilus.cfg
 
 %Build
 # Force use of safer macros

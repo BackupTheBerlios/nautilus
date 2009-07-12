@@ -8,7 +8,7 @@ MINOR  = 8
 MMINOR = rc2
 VERSION = $(MAJOR).$(MINOR)$(MMINOR)
 VERSIONNAME = nautilus-$(MAJOR).$(MINOR)$(MMINOR)
-RPMDIR = /usr/src/packages
+RPMDIR = /tmp/$(VERSIONNAME)-build
 
 #XCOMP=/usr/bin/i586-mingw32msvc-
 # default C compiler
@@ -245,9 +245,13 @@ source-release: source-release-dir
 	tar -czf $(VERSIONNAME).tar.gz $(VERSIONNAME)
 	rm -rf $(VERSIONNAME)
 
-src-rpm: source-release
+rpm-dirs:
+	mkdir -p $(RPMDIR)/{SOURCES,SRPMS,RPMS,BUILD,SPECS}
+
+src-rpm: source-release rpm-dirs
 	cp RPM/$(VERSIONNAME).sounddir.patch $(RPMDIR)/SOURCES
 	cp $(VERSIONNAME).tar.gz $(RPMDIR)/SOURCES
+	cp RPM/nautilus.spec $(RPMDIR)/SPECS
 	rpmbuild -bs RPM/nautilus.spec	
 
 bin-rpm: src-rpm

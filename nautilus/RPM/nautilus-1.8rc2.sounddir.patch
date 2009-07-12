@@ -1,9 +1,0 @@
---- ./nautilus.cfg.orig	Mon Jan  8 17:53:03 2001
-+++ ./nautilus.cfg	Mon Jan  8 17:53:49 2001
-@@ -53,3 +53,6 @@
- #MIC_SENS = "MEDIUM"	# specify medium mic sensitivity
- #OUT_VOLUME = "HIGH"	# specify high audio output level
- 
-+LOGON_FILE = "/usr/lib/nautilus/logon.v"
-+RING_FILE = "/usr/lib/nautilus/ring.v"
-+

@@ -249,7 +249,6 @@ rpm-dirs:
 	mkdir -p $(RPMDIR)/{SOURCES,SRPMS,RPMS,BUILD,SPECS}
 
 src-rpm: source-release rpm-dirs
-	cp RPM/$(VERSIONNAME).sounddir.patch $(RPMDIR)/SOURCES
 	cp $(VERSIONNAME).tar.gz $(RPMDIR)/SOURCES
 	cp RPM/nautilus.spec $(RPMDIR)/SPECS
 	rpmbuild -bs RPM/nautilus.spec	

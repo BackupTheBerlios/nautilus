@@ -5,7 +5,7 @@
 #
 MAJOR  = 1
 MINOR  = 8
-MMINOR = rc2
+MMINOR = rc3
 VERSION = $(MAJOR).$(MINOR)$(MMINOR)
 VERSIONNAME = nautilus-$(MAJOR).$(MINOR)$(MMINOR)
 RPMDIR = /tmp/$(VERSIONNAME)-build

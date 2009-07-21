@@ -100,6 +100,15 @@ connect mobile phone with address 00:11:22:33:44:55 and RFCOMM channel 3 to /dev
 
 now Linux can access your mobile phone as a modem under /dev/rfcomm0
 
+It is said to be possible to connect a modem via analog POTS to 
+a mobile phone in CSD mode. To make this work special modem
+init strings are needed. See the very instructive document:
+http://www.baty.hanse.de/gsmlink/gsmlink.txt.
+to make a connection to a POTS modem, you have to select
+V34  (modem) 9600 bps: AT+CBST=7,0,1. 
+When connecting to a ISDN PABX with modem emulation you have to use
+V110 (IDSN) 9600 bps:  AT+CBST=71,0,1
+
 We have tested (TODO!) nokia 6520 and a nokia XXXX with nautilus for Linux
 
 

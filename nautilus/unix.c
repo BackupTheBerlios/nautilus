@@ -686,12 +686,15 @@ InitAudio(int sample_rate, int frame_size, int verbose, float jbuf)
     int mixer_fd, devmask, stereod, lcval, rcval;
 
     if ((a_port = open(AUDIO_DEVICE, O_RDWR)) < 0) {
+	perror ("open(AUDIO_DEVICE, O_RDWR))");
         return FAIL;
     }
     if (SetSamplingParams(sample_rate, verbose) == FAIL) {
+	perror ("SetSamplingParams(sample_rate, verbose)");    
         return FAIL;
     }
     if ((mixer_fd = open(MIXER_DEVICE, O_RDWR)) < 0) {
+	 perror ("open(MIXER_DEVICE, O_RDWR))");
         return FAIL;
     }
     if (ioctl(mixer_fd, SOUND_MIXER_READ_DEVMASK, &devmask) == -1) {

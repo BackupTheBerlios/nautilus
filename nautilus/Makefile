@@ -225,8 +225,10 @@ clean:
 	(cd rsaref; $(MAKE) -f makefile.unx clobber)
 	(cd lpc10; $(MAKE) -f makefile.unx clobber)
 
-install:
+install-binary:
 	cp nautilus $(BINDIR)
+
+install: install-binary
 	cp doc/nautilus.1 $(MANDIR)/man1
 	cp -p logon_new.v ring_new.v $(SHAREDIR)
 
@@ -248,6 +250,10 @@ source-release: source-release-dir
 rpm-dirs:
 	mkdir -p $(RPMDIR)/{SOURCES,SRPMS,RPMS,BUILD,SPECS}
 
+debian-binary:
+	fakeroot debian/rules clean
+	fakeroot debian/rules binary
+	
 src-rpm: source-release rpm-dirs
 	cp $(VERSIONNAME).tar.gz $(RPMDIR)/SOURCES
 	cp RPM/nautilus.spec $(RPMDIR)/SPECS

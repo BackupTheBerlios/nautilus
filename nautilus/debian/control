@@ -9,6 +9,7 @@ Homepage: http://nautilus.berlios.de
 Package: nautilus
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: also-oss
 Description: secure dialup/IP voice phone
 	Nautilus allows half-duplex encrypted-voice conversation over standard
 	phone lines or network links.  It requires a PC or Sun Sparcstation with

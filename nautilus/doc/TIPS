@@ -108,7 +108,6 @@ to make a connection to a POTS modem, you have to select
 V34  (modem) 9600 bps: AT+CBST=7,0,1. 
 When connecting to a ISDN PABX with modem emulation you have to use
 V110 (IDSN) 9600 bps:  AT+CBST=71,0,1
-<<<<<<< TIPS
 
 Other German Reference pages are
 http://www.trinler.org/de/service/technik/gsm.html

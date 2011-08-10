@@ -560,13 +560,16 @@ SetSamplingParams(int sample_rate, int verbose)
 
     if ((ioctl(a_port, SOUND_PCM_WRITE_BITS, &sample_size_parm) == -1) ||
 	(sample_size_parm != sample_size)) {
+    	perror ("SetSamplingParams: failed to set sample size");
 	return FAIL;
     }
     if ((ioctl(a_port, SOUND_PCM_WRITE_CHANNELS, &channels_parm) == -1) ||
 	(channels_parm != channels)) {
+    	perror ("SetSamplingParams: failed to set number of channels");
 	return FAIL;
     }
     if (ioctl(a_port, SOUND_PCM_WRITE_RATE, &sample_rate_parm) == -1) {
+	perror ("SetSamplingParams: failed to set SOUND_PCM_WRITE_RATE");
 	return FAIL;
     }
     if (verbose) {

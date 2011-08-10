@@ -8,7 +8,6 @@ License:    proprietary / free for non commercial use
 Source:     http://download.berlios.de/nautilus/%{SourceName}-%{version}.tar.gz
 BuildRoot:  %{_tmppath}/%{SourceName}-%{version}-build
 Requires: alsa-oss
-BuildRequires: alsa-oss
 
 %define SHAREPACK /usr/share/packages
 %define SHAREDIR %{SHAREPACK}/%{Name}

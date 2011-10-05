@@ -32,6 +32,7 @@
 #define PAUSE(ms)		Sleep(ms)
 #elif defined(unix)
 #include <unistd.h>
+#include <signal.h>
 #define	PAUSE(ms)		usleep(ms*1000)
 #endif
 
@@ -192,6 +193,17 @@ Connect(char *phone, char *modem_init, char *prefix, void (*msg_cb)(char *msg))
 #endif
 }
 
+/* when program is interupted, reset modem and delete auto answer */
+void modemreset( int signum){
+    WritePort("ATZ\r", 3);
+    if (WaitFor("OK", 2, NULL) < 0) {
+        WritePort("ATZ\r", 3);
+        if (WaitFor("OK", 2, NULL) < 0) {
+            return ; /* Give up */
+        }
+    }
+}
+
 /*
  * If 'flag' is true, put the modem in answer mode (ATS0=1) and wait
  * indefinitely for an incoming call.  Otherwise, take the modem
@@ -208,6 +220,10 @@ AnswerMode(int flag, void (*msg_cb)(char *msg))
         if (WaitFor("OK", 2, NULL) < 0) {
             return -1;
         }
+    }
+    if((signal(SIGINT, modemreset))==SIG_ERR) {
+	  fputs("ntp_modem: error installing break handler\n", stderr);
+          return -1;
     }
     PAUSE(100);                 /* wait 100ms */
     if (flag) {

@@ -117,3 +117,12 @@ or Search for the ETSI SPEC ts_127007v050200p.pdf
 We will test (TODO!) nokia 6520 and a nokia XXXX with nautilus for Linux
 
 
+OSS is missing (e.g. Nokia N900, modern linux systems in general)
+=================================================================
+
+Install the wrapper library alsa-oss.
+Now you can start nautilus as "aoss nautilus -x -y -z .."
+and nautilus is using alsa via the wrapper library.
+Tested on opensuse 12.1
+
+

@@ -1,3 +1,9 @@
+nautilus (1.8rc4-1) unstable; urgency=low
+
+  * RC4 Debain package 
+
+ -- Johannes Poehlmann <johannes.poehlmann@lst.de>  Thu, 15 Nov 2012 08:48:49 +0000
+
 nautilus (1.8rc3-1) unstable; urgency=low
 
   * Initial release 

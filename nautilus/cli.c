@@ -90,7 +90,7 @@ main(int argc, char *argv[])
     char            tbuf[128];
     UINT8           audio_buf[2048];
     void            debug_puts(char *);
-    int             random_fd, wanted_random_bytes, random_bytes;
+    int             random_fd, urandom_fd, wanted_random_bytes, random_bytes;
 	
 #ifdef linux					/* Linux only, for now */
     if (geteuid() == 0) {		/* if we have root privs */
@@ -465,32 +465,37 @@ main(int argc, char *argv[])
     {
         random_bytes = read (random_fd, audio_buf, wanted_random_bytes);
 
-	if  ( random_bytes  > 128 ) /* Just to define a minimum of
-				       "real random" */
-	    {
-	        if (random_bytes <= wanted_random_bytes)  /* should be */
+		if  ( random_bytes  < 64 ) /* Just define a minimum of "real random" */
+		{
+				error(MSG_WARNING, "few real LINUX random ");
+		}
+
+	    if (random_bytes <= wanted_random_bytes)  /* should be */
 		{
 		   char *p;
 
 		   /* Fill the rest with Linux Pseudorandom */
-	    	    close(random_fd);
-		    random_fd = open ("/dev/urandom",O_RDONLY,O_NONBLOCK);
+		    urandom_fd = open ("/dev/urandom",O_RDONLY,O_NONBLOCK);
+
+			if ( urandom_fd <= 0 )
+			{	
+				error(MSG_FATAL,"could not open LINUX random dev" );
+				exit(1);
+			}
 
 		    wanted_random_bytes= wanted_random_bytes - random_bytes;
 		    p= audio_buf+random_bytes;
-		    random_bytes = read (random_fd, audio_buf, 
+		    random_bytes = read (urandom_fd, audio_buf, 
 					 wanted_random_bytes);
-	        } 
-	     } else { 
-  		error(MSG_FATAL, "not enough LINUX random ");
-                exit(1);
-	     }
+	    	close(urandom_fd);
+	    } 
+
+    	close(random_fd);
+
 	} else { 
 		error(MSG_FATAL,"could not open LINUX random dev" );
 		exit(1);
-
 	}
-        close(random_fd);
 #endif
 
 

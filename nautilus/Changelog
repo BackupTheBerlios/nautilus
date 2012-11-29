@@ -5,14 +5,22 @@ o integrate speex
 o get nautilus into debian (as nautilus-securephone)
 o how hard is duplex - does it imply multithreading ?
 
+Changes in Nautilus Version 1.8rc5 (in preparation)
+o do not give up if linux /dev/random is empty. Warn.
+o Build on a couple of architectures including arm and powerpc
+  in the open suse build service.
+o tests on raspberry pi.
+
 Changes in Nautilus Version 1.8rc4
-o new spec file as in opens suse build service
+o new spec file as in open suse build service
 o debian subdirectory 
 o require/Recommend also-oss
 o new TIPS for use of cell phones
 
 Changes in Nautilus Version 1.8rc3
 
+o implement local port selection. must do a bind
+  with a valid address record fails for now.
 o Linux distribution independent RPM building
 o Standalone Windows nautilus exe, can be started directly 
   from read only media without installation

@@ -455,7 +455,9 @@ dh_key_exchange (R_DH_PARAMS *dh_params, enum modes mode)
 		dh_params->primeLen * 8);
     R_SetupDHAgreement (dh_public, dh_private, DH_PRIVATE_LENGTH,
 		dh_params, &random_struct);
+    fprintf (stderr,"\nburn sensitive data \n");
     memset (&random_struct, 0, sizeof random_struct); /* burn sensitive data */
+    fprintf (stderr,"\nexchange structure\n");
     exchange_structure ("Diffie-Hellman public key values",
 		mode, dh_public, remote_dh_public, dh_bytes, 60);
 	
@@ -634,6 +636,7 @@ exchange_structure (char *name, enum modes mode, UINT8 *local_buf,
 	 * Exchange keyexch structures.  Originator goes first.
 	 */
     if (mode == ORIGINATE) {
+	    	/*if (params.verbose )*/ fprintf(stderr,"exchange_structure ORIGINATE\n");
 		if (SendPkt(RDATA, local_buf, len, params.sp_timeout) == FAIL) {
 			error(MSG_FATAL, "Error sending keyexch structure");
 			return FAIL;
@@ -654,6 +657,7 @@ exchange_structure (char *name, enum modes mode, UINT8 *local_buf,
 		}
     }
     else {
+	    	/*if (params.verbose )*/ fprintf(stderr, "exchange_structure ANSWER\n");
 		if (ReadPkt(&packet, timeout) == FAIL) {
 			if (errno == EINTR) {
 				error(MSG_FATAL, "Timeout while exchanging %s", name);

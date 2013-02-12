@@ -16,14 +16,17 @@
 #define PROTOTYPES 1
 #endif
 
+/* We only build against GCC for now (in 2013)*/
+#include <stdint.h>
+
 /* POINTER defines a generic pointer type */
 typedef unsigned char *POINTER;
 
 /* UINT2 defines a two byte word */
-typedef unsigned short int UINT2;
+typedef uint16_t UINT2;
 
 /* UINT4 defines a four byte word */
-typedef unsigned long int UINT4;
+typedef uint32_t UINT4;
 
 #ifndef NULL_PTR
 #define NULL_PTR ((POINTER)0)

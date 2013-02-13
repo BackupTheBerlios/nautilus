@@ -6,7 +6,9 @@ o get nautilus into debian (as nautilus-securephone)
 o how hard is duplex - does it imply multithreading ?
 
 Changes in Nautilus Version 1.8rc5 (in preparation)
-o do not give up if linux /dev/random is empty. Warn.
+o in DH-only mode do not give up if linux /dev/random is empty. 
+  Warn instead and use /dev/urandom
+o fix 64 bit (hopefully) in x86_64
 o Build on a couple of architectures including arm and powerpc
   in the open suse build service.
 o tests on raspberry pi.

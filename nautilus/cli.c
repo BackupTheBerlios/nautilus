@@ -349,7 +349,7 @@ main(int argc, char *argv[])
 	/* Print startup information. */
 	if (params.net_flag == TRUE) {
 		if ( params.net.localport != 0 ){
-			printf("Selected Source Port : %5d\t\ Destination Port : %5d\t",
+			printf("Selected Source Port : %5d\t Destination Port : %5d\t",
 					params.net.localport, params.net.portnum);
 		} else {
 				printf("Selected Port : %5d\t\t", params.net.portnum);
@@ -445,60 +445,66 @@ main(int argc, char *argv[])
 				error(MSG_FATAL, "ReadAudio() failure.");
 			   AudioFlow(RECEIVE);
 			} else {
-			    /* get some random into audio_buf
-			       as we disabled audio . Under Linux
-			       we could use /dev/urandom. We must
-			       realize that we could and probably 
-			       will exhaust the entropy pool.
-			     */
+			  /* get some random into audio_buf
+			     as we disabled audio . Under Linux
+			     we could use /dev/urandom. We must
+			     realize that we could and probably 
+			     will exhaust the entropy pool.
+			  */
 			
 #ifdef linux
 
- 
-    /* Linux has a random device which offers data as long as the system
-       has still enough "randomnes" collected. We use it */
- 
-    wanted_random_bytes = 1024 - 2;
 
-    random_fd = open ("/dev/random",O_RDONLY,O_NONBLOCK);
-    if ( random_fd > 0 ) 
-    {
-        random_bytes = read (random_fd, audio_buf, wanted_random_bytes);
+			  /* Linux has a random device which offers data as long as the system
+			    has still enough "randomnes" collected. We use it */
+			 
+				  wanted_random_bytes = 1024 - 2;
 
-		if  ( random_bytes  < 64 ) /* Just define a minimum of "real random" */
-		{
-				error(MSG_WARNING, "few real LINUX random ");
-		}
+				  random_fd = open ("/dev/random",O_RDONLY,O_NONBLOCK);
+				  if ( random_fd > 0 ) 
+				  {
+					random_bytes = read (random_fd, audio_buf, 64);
 
-	    if (random_bytes <= wanted_random_bytes)  /* should be */
-		{
-		   char *p;
+					if  ( random_bytes  < 64 ) /* Just define a minimum of "real random" */
+					{
+							error(MSG_WARNING, "few real LINUX random ");
+					}
 
-		   /* Fill the rest with Linux Pseudorandom */
-		    urandom_fd = open ("/dev/urandom",O_RDONLY,O_NONBLOCK);
+					if (random_bytes <= wanted_random_bytes)  /* should be */
+					{
+						char *p;
 
-			if ( urandom_fd <= 0 )
-			{	
-				error(MSG_FATAL,"could not open LINUX random dev" );
-				exit(1);
-			}
+						/* Fill the rest with Linux Pseudorandom */
+						urandom_fd = open ("/dev/urandom",O_RDONLY,O_NONBLOCK);
 
-		    wanted_random_bytes= wanted_random_bytes - random_bytes;
-		    p= audio_buf+random_bytes;
-		    random_bytes = read (urandom_fd, audio_buf, 
-					 wanted_random_bytes);
-	    	close(urandom_fd);
-	    } 
+						if ( urandom_fd <= 0 )
+						{	
+							error(MSG_FATAL,"could not open LINUX random dev" );
+							exit(1);
+						}
 
-    	close(random_fd);
+						wanted_random_bytes= wanted_random_bytes - random_bytes;
+						p= audio_buf+random_bytes;
+						random_bytes = read (urandom_fd, audio_buf, 
+							 wanted_random_bytes);
+						close(urandom_fd);
+					} 
 
-	} else { 
-		error(MSG_FATAL,"could not open LINUX random dev" );
-		exit(1);
-	}
+					close(random_fd);
+
+				  } else { 
+						error(MSG_FATAL,"could not open LINUX random dev" );
+						exit(1);
+				  }
+#else
+
+								  
+				/* windows emergeny very pseudo-random */
+				  pid_t 	pid=getpid();
+				  time_t	tim=time();
+				  memcpy (audio_buf,&pid,sizeof(pid_t));
+				  memcpy (audio_buf+10,&tim,sizeof(time_t));
 #endif
-
-
 
 			}              
 			

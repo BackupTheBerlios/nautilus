@@ -81,7 +81,7 @@ NAUTILUS_COMM_OBJ=	bitstrm.o	\
 NAUTILUS_WIN_OBJ=	\
 			win32.o \
 			win32ai.o \
-			win32ao.o
+			win32ao.o 
 
 NAUTILUS_UNX_OBJ= unix.o		
 

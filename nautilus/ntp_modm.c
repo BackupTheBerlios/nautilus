@@ -195,6 +195,7 @@ Connect(char *phone, char *modem_init, char *prefix, void (*msg_cb)(char *msg))
 
 /* when program is interupted, reset modem and delete auto answer */
 void modemreset( int signum){
+#ifdef UNIX
     WritePort("ATZ\r", 3);
     if (WaitFor("OK", 2, NULL) < 0) {
         WritePort("ATZ\r", 3);
@@ -202,6 +203,7 @@ void modemreset( int signum){
             return ; /* Give up */
         }
     }
+#endif
 }
 
 /*

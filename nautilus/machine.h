@@ -18,13 +18,14 @@
 #define __MACHINE_H
 
 /* Machine/compiler definitions */
+#include <stdint.h>
 
-typedef char		    INT8;
-typedef unsigned char	UINT8;
-typedef short		    INT16;
-typedef unsigned short	UINT16;
-typedef int		        INT32;
-typedef unsigned	    UINT32;
+typedef int8_t		INT8;
+typedef uint8_t		UINT8;
+typedef int16_t		INT16;
+typedef uint16_t	UINT16;
+typedef int32_t		INT32;
+typedef uint32_t	UINT32;
 
 #if defined(unix)
 #define	Strcasecmp(x, y)	    strcasecmp(x, y)

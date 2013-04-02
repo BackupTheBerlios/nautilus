@@ -565,11 +565,16 @@ dh_key_exchange (R_DH_PARAMS *dh_params, enum modes mode)
  * useful to a potential attacker.
  */
 
+/* In this source file "long" means 32 bit. So replace
+ *  * unsigned long by uint32_t */
+#include <stdint.h>
+
+
 void
 print_dh_verification (char *agreed_key, int length)
 {
     void sha_memory();
-    unsigned long digest[5];
+    uint32_t digest[5];
     int loop; 
 	
 
@@ -583,10 +588,11 @@ print_dh_verification (char *agreed_key, int length)
 #endif
     	
     fprintf (stderr, "*** DH verification code: %02x%02x %02x%02x \n",
-                (unsigned int)digest[1] & 0xFF,		/* was [7] */
-               ((unsigned int)digest[3] >> 8) & 0xFF,	/* was [14] */
-               ((unsigned int)digest[1] >> 16) & 0xFF,	/* was [5] */
-               ((unsigned int)digest[3] >> 24) & 0xFF );/* was [12] */
+                digest[1] & 0xFF,	/* was [7] */
+               (digest[3] >> 8) & 0xFF,	/* was [14] */
+               (digest[1] >> 16) & 0xFF,/* was [5] */
+               (digest[3] >> 24) & 0xFF );/* was [12] */
+
     fprintf (stderr, "\n *** please read this code to the the other party ! ***\n"
 		     "If your code differs form the other party, your\n"
 		     "conversation is likely to be listened in via a\n"

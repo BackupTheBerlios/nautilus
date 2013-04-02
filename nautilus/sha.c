@@ -66,6 +66,10 @@
 #include <stdio.h>
 #include <memory.h>
 
+/* In this source file "long" means 32 bit. So replace
+ * unsigned long by uint32_t */
+#include <stdint.h>
+
 #define VERBOSE
 
 #define TRUE  1
@@ -90,7 +94,7 @@ main(argc, argv)
 int argc;
 char *argv[];
 {
-    unsigned long hbuf[HASH_SIZE];
+    uint32_t hbuf[HASH_SIZE];
     char *s;
     int file_args = FALSE;  /* If no files, take it from stdin */
     int verbose = FALSE;
@@ -158,12 +162,12 @@ char *argv[];
    makes for very slow code, so we rely on the user to sort out endianness
    at compile time */
 
-static void byteReverse( unsigned long *buffer, int byteCount )
+static void byteReverse( uint32_t *buffer, int byteCount )
     {
-    unsigned long value;
+    uint32_t value;
     int count;
 
-    byteCount /= sizeof( unsigned long );
+    byteCount /= sizeof( uint32_t );
     for( count = 0; count < byteCount; count++ )
 	{
 	value = ( buffer[ count ] << 16 ) | ( buffer[ count ] >> 16 );
@@ -176,13 +180,13 @@ static void byteReverse( unsigned long *buffer, int byteCount )
 
 union longbyte
 {
-    unsigned long W[80];        /* Process 16 32-bit words at a time */
+    uint32_t W[80];        /* Process 16 32-bit words at a time */
     char B[320];                /* But read them as bytes for counting */
 };
 
 int sha_file(filename, buffer)      /* Hash a file */
 char *filename;
-unsigned long *buffer;
+uint32_t *buffer;
 {
     FILE *infile;
 
@@ -201,15 +205,15 @@ unsigned long *buffer;
 
 void sha_memory(mem, length, buffer)    /* Hash a memory block */
 char *mem;
-unsigned long length;
-unsigned long *buffer;
+uint32_t length;
+uint32_t *buffer;
 {
     nist_guts(FALSE, (FILE *) NULL, mem, length, buffer);
 }
 
 void sha_stream(stream, buffer)
 FILE *stream;
-unsigned long *buffer;
+uint32_t *buffer;
 {
     nist_guts(TRUE, stream, (char *) NULL, 0l, buffer);
 }
@@ -258,19 +262,19 @@ static void nist_guts(file_flag, stream, mem, length, buf)
 int file_flag;                  /* Input from memory, or from stream? */
 FILE *stream;
 char *mem;
-unsigned long length;
-unsigned long *buf;
+uint32_t length;
+uint32_t *buf;
 {
     int i, nread, nbits;
     union longbyte d;
-    unsigned long hi_length, lo_length;
+    uint32_t hi_length, lo_length;
     int padded;
     char *s;
 
-    unsigned long *p0, *p1, *p2, *p3, *p4;
-    unsigned long A, B, C, D, E, temp;
+    uint32_t *p0, *p1, *p2, *p3, *p4;
+    uint32_t A, B, C, D, E, temp;
 
-    unsigned long h0, h1, h2, h3, h4;
+    uint32_t h0, h1, h2, h3, h4;
 
     h0 = 0x67452301;                            /* Accumulators */
     h1 = 0xefcdab89;

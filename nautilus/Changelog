@@ -4,6 +4,9 @@ o move to openssl
 o integrate speex
 o get nautilus into debian (as nautilus-securephone)
 o how hard is duplex - does it imply multithreading ?
+o fix big/little endian in Makefile. lett gcc decide, what endian-ness we have
+o replace sha.c with openssl. 
+o replace rasref
 
 Changes in Nautilus Version 1.8rc5 
 o in DH-only mode do not give up if linux /dev/random is empty. 

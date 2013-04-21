@@ -263,6 +263,8 @@ receive(NSP_HANDLE *h, long timeout)
 
     /* compute size
      */
+     /* TODO: check for 64 bit error here 
+      * must define/document NSP packet format better */ 
     new->userlen = n - (long) &(*(NSP_PKT *) 0).buf[0];
 #ifdef NSPDEBUG
 	fprintf(stderr, "receive: type=%d seq=%d userlen=%d\n",

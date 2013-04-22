@@ -48,33 +48,25 @@
  *	+-+-+-+-+-+-+-+-+
  */
 
-/* This structure is put on the network as is. possible portability problems
- * as compiler may insert alignment bytes. __packed may help, but is non portable
- * Just make it a byte array an index defines. Add test code that ist activated
- * with -DNSPDEBUG
- */
+/* To resolve possible network portability problems, we replace
+ * the former used struct NSP_PKT by a array of unsgned char,
+ * which is portable */
 
-#define NSP_SEQ_H 0
-#define NSP_SEQ_L 1
+#define SEQH 0
+#define SEQL 1
 #define NSP_BUF_START   2
-unsigned char nsp_buf[ NSP_MPDU + NSP_BUF_START ];
+typedef unsigned char NSP_PKT[ NSP_MPDU + NSP_BUF_START ];
 
-typedef struct nsp_pkt_s {
-    unsigned char	seqh;		/* high-order sequence */
-    unsigned char	seql;		/* low-order sequence */
-    char		buf[NSP_MPDU];
-} NSP_PKT;
 
-/* End of Work here */
 
-#define getnspseq(p)		((unsigned) (((p)->seqh & 0x3F) << 8 | (p)->seql))
-#define	getnsptype(p)		(((p)->seqh >> 6) & 0x3)
+#define getnspseq(buf)		((unsigned) ((*buf[SEQH] & 0x3F) << 8 | *buf[SEQL]))
+#define	getnsptype(buf)		((*buf[SEQH] >> 6) & 0x3)
 
 static void
 setnsphdr(NSP_PKT *p, int type, unsigned seq)
 {
-    p->seqh = type << 6 | (seq >> 8) & 0x3F;
-    p->seql = seq;
+    *p[SEQH] = type << 6 | (seq >> 8) & 0x3F;
+    *p[SEQL] = seq;
 }
 
 /* queue element structure
@@ -122,11 +114,6 @@ nsp_create(void (*msg_cb)(char *), char *ntp_class_name)
 {
     NSP_HANDLE *h;
     
-#ifdef NSPDEBUG
-    fprintf(stderr,"buff in NSP Paket is at pos %d\n", (long) &(*(NSP_PKT *) 0).buf[0]);
-
-#endif
-
     h = (NSP_HANDLE *) malloc(sizeof *h);
     if (h) {
 	h->ntp = ntp_create(msg_cb, ntp_class_name);
@@ -216,7 +203,7 @@ nsp_put_unrel(NSP_HANDLE *h, void *buf, unsigned count, long timeout)
     /* build packet
      */
     setnsphdr(&pkt, NSP_TYPE_UNREL, ++h->put_seq);
-    memcpy(pkt.buf, (char *) buf, count);
+    memcpy(pkt + NSP_BUF_START, (char *) buf, count);
 
     /* do transport put
      */
@@ -227,12 +214,7 @@ nsp_put_unrel(NSP_HANDLE *h, void *buf, unsigned count, long timeout)
 		    count);
 #endif
     return ntp_put(h->ntp,
-		   (void *) &pkt,
-		/* TODO: 
-		 * obfuscated C contest: not portable. Tries to
-		 * calculate compiler alignment. */
-		   (unsigned) &((NSP_PKT *)0)->buf[count],
-		   timeout);
+		   (void *) &pkt, NSP_BUF_START+count, timeout);
 }
 
 /* compute time left before timeout
@@ -288,7 +270,7 @@ receive(NSP_HANDLE *h, long timeout)
       * TODO: what happens here is: calculate relative position of "buf"
       * in NSP_PKT. This is NOT portable */
 
-    new->userlen = n - (long) &(*(NSP_PKT *) 0).buf[0];
+    new->userlen = n - NSP_BUF_START;
 #ifdef NSPDEBUG
 	fprintf(stderr, "receive: type=%d seq=%d userlen=%d\n",
 		getnsptype(&new->pkt), getnspseq(&new->pkt), new->userlen);
@@ -324,16 +306,15 @@ receive(NSP_HANDLE *h, long timeout)
 	setnsphdr(&ack, NSP_TYPE_ACK, getnspseq(&new->pkt));
 #ifdef NSPDEBUG
     {
-	int retval =
+	// TODO: what is this : int retval =
 #endif
-	ntp_put(h->ntp, (void *) &ack,
-		(unsigned) &(*(NSP_PKT *)0).buf[0], timeout);
+	ntp_put(h->ntp, (void *) &ack, NSP_BUF_START, timeout);
 #ifdef NSPDEBUG
 	fprintf(stderr, "receive: sent ACK for seq=%d\n",
 		getnspseq(&new->pkt));
-	if (retval != (int) &(*(NSP_PKT *)0).buf[0])
+	if (retval != NSP_BUF_START)
 	    fprintf(stderr, "ntp_put returned %d (expected %d)\n", retval,
-	            (int) &(*(NSP_PKT *)0).buf[0]);
+	            NSP_BUF_START);
     }
 #endif
     }
@@ -409,7 +390,7 @@ nsp_put_rel(NSP_HANDLE *h, void *buf, unsigned count, long timeout)
     /* build the transmit packet
      */
     setnsphdr(&pkt, NSP_TYPE_REL, ++h->put_seq);
-    memcpy(pkt.buf, (char *) buf, count);
+    memcpy(pkt + NSP_BUF_START, (char *) buf, count);
 
     /* transmit loop
      */
@@ -429,12 +410,9 @@ nsp_put_rel(NSP_HANDLE *h, void *buf, unsigned count, long timeout)
 		    count,
 		    retransmit_counter++ ? "RETRANSMIT" : "");
 #endif
-	    switch (ntp_put(h->ntp,
-			    (void *) &pkt,
-			    /* obfuscated C contest: not portable. Tries to
-			     * calculate compiler alignment. */
-			    (unsigned) &((NSP_PKT *)0)->buf[count],
-			    1)) {
+	    switch (ntp_put(h->ntp,(void *) &pkt,NSP_BUF_START+count, 1))
+			    			    
+			 {
 	    case -1:
 #ifdef NSPDEBUG
 		perror("ntp_put");
@@ -527,7 +505,7 @@ nsp_get(NSP_HANDLE *h, void *buf, unsigned size, long timeout)
 	    n = h->Q_head->userlen;
 	    if (n > size)
 		n = size;
-	    memcpy((char *) buf, h->Q_head->pkt.buf, n);
+	    memcpy((char *) buf, h->Q_head->pkt+NSP_BUF_START, n);
 
 	    /* dequeue it
 	     */

@@ -47,11 +47,25 @@
  *	|		|
  *	+-+-+-+-+-+-+-+-+
  */
+
+/* This structure is put on the network as is. possible portability problems
+ * as compiler may insert alignment bytes. __packed may help, but is non portable
+ * Just make it a byte array an index defines. Add test code that ist activated
+ * with -DNSPDEBUG
+ */
+
+#define NSP_SEQ_H 0
+#define NSP_SEQ_L 1
+#define NSP_BUF_START   2
+unsigned char nsp_buf[ NSP_MPDU + NSP_BUF_START ];
+
 typedef struct nsp_pkt_s {
     unsigned char	seqh;		/* high-order sequence */
     unsigned char	seql;		/* low-order sequence */
     char		buf[NSP_MPDU];
 } NSP_PKT;
+
+/* End of Work here */
 
 #define getnspseq(p)		((unsigned) (((p)->seqh & 0x3F) << 8 | (p)->seql))
 #define	getnsptype(p)		(((p)->seqh >> 6) & 0x3)
@@ -73,7 +87,6 @@ typedef struct nsp_buf_s {
 } NSP_BUF;
 
 #ifdef NSPDEBUG
-#include <stdio.h>
 static char *
 seqs(NSP_HANDLE *h) {
     if (h) {
@@ -108,6 +121,11 @@ NSP_HANDLE *
 nsp_create(void (*msg_cb)(char *), char *ntp_class_name)
 {
     NSP_HANDLE *h;
+    
+#ifdef NSPDEBUG
+    fprintf(stderr,"buff in NSP Paket is at pos %d\n", (long) &(*(NSP_PKT *) 0).buf[0]);
+
+#endif
 
     h = (NSP_HANDLE *) malloc(sizeof *h);
     if (h) {
@@ -210,6 +228,9 @@ nsp_put_unrel(NSP_HANDLE *h, void *buf, unsigned count, long timeout)
 #endif
     return ntp_put(h->ntp,
 		   (void *) &pkt,
+		/* TODO: 
+		 * obfuscated C contest: not portable. Tries to
+		 * calculate compiler alignment. */
 		   (unsigned) &((NSP_PKT *)0)->buf[count],
 		   timeout);
 }
@@ -263,8 +284,10 @@ receive(NSP_HANDLE *h, long timeout)
 
     /* compute size
      */
-     /* TODO: check for 64 bit error here 
-      * must define/document NSP packet format better */ 
+     /* 
+      * TODO: what happens here is: calculate relative position of "buf"
+      * in NSP_PKT. This is NOT portable */
+
     new->userlen = n - (long) &(*(NSP_PKT *) 0).buf[0];
 #ifdef NSPDEBUG
 	fprintf(stderr, "receive: type=%d seq=%d userlen=%d\n",
@@ -408,6 +431,8 @@ nsp_put_rel(NSP_HANDLE *h, void *buf, unsigned count, long timeout)
 #endif
 	    switch (ntp_put(h->ntp,
 			    (void *) &pkt,
+			    /* obfuscated C contest: not portable. Tries to
+			     * calculate compiler alignment. */
 			    (unsigned) &((NSP_PKT *)0)->buf[count],
 			    1)) {
 	    case -1:

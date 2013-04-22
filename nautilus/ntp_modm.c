@@ -338,6 +338,7 @@ xxput(NTP_HANDLE *h, void *buf, unsigned count, long timeout)
     /*
      * Assemble the data into a packet, add a trailing 16-bit
      * CRC, and send it on its way.
+     * TODO: check for errors here. should i be incremented too ?
      */
     i = 0;
     pkt[i++] = FRAME;

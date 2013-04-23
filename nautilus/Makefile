@@ -162,7 +162,7 @@ linux:
 	$(MAKE) liblpc10.a  RANLIB=$(RANLIB)
 	$(MAKE) nautilus  RANLIB=$(RANLIB) \
 	NAUTILUS_OBJ="$(NAUTILUS_COMM_OBJ) $(NAUTILUS_UNX_OBJ)" \
-	CFLAGS+=" -DUNIX -DORDER_DCBA -DCLIP $(INCLUDES)"
+	CFLAGS+=" -DUNIX -DORDER_DCBA -DCLIP $(INCLUDES) $(EXTRACFLAGS)"
 
 windows: bin2array $(XCOMP)dlltool 
 	# runs only if XCOMP ist set to the mingw prefix!
@@ -174,7 +174,8 @@ windows: bin2array $(XCOMP)dlltool
 	$(MAKE) liblpc10.a   CC=$(CC)  LD=$(LD)  AR=$(AR)  RANLIB=$(RANLIB)
 	$(MAKE) nautilus  \
 	NAUTILUS_OBJ="$(NAUTILUS_COMM_OBJ) $(NAUTILUS_WIN_OBJ)" \
-	CFLAGS=" -DWIN32 -DDEBUG -D_CONSOLE -D_MBCS -DORDER_DCBA -DCLIP $(INCLUDES)" \
+	CFLAGS+=" -DWIN32 -DDEBUG -D_CONSOLE -D_MBCS -DORDER_DCBA -DCLIP $(INCLUDES)\
+	$(EXTRACFLAGS)" \
 	LIBS+=-liberty LDFLAGS+=-L/usr/i586-mingw32msvc/lib \
 	LIBS+="-lwsock32 -lwinmm" 
 	mv nautilus nautilus.exe

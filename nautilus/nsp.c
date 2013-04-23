@@ -25,15 +25,13 @@
 #include "ntp.h"
 #include "nsp.h"
 
-#undef NSPDEBUG
-
 #define	NSP_TYPE_UNREL	0		/* unreliable */
 #define NSP_TYPE_REL	1		/* reliable */
 #define	NSP_TYPE_ACK	2		/* acknowledge */
 #define NSP_TYPE_NAT	3		/* not a NSP packet, used for NAT traversal,
 								   NSP should ignore it. If doing NAT traversal,
 								   use packets with bits 6,7 set in first byte */
-
+char sPktType[4][128]={ "unreliable", "reliable","acknowledge", "NAT"};
 
 /* structure of a NSP packet
  *
@@ -208,8 +206,8 @@ nsp_put_unrel(NSP_HANDLE *h, void *buf, unsigned count, long timeout)
     /* do transport put
      */
 #ifdef NSPDEBUG
-	    fprintf(stderr, "nsp_put_unrel: type=%d seq=%d userlen=%d\n",
-		    getnsptype(&pkt),
+	    fprintf(stderr, "nsp_put_unrel: type=%d (%s) seq=%d userlen=%d\n",
+		    getnsptype(&pkt), sPktType[getnsptype(&pkt)],
 		    getnspseq(&pkt),
 		    count);
 #endif
@@ -272,8 +270,11 @@ receive(NSP_HANDLE *h, long timeout)
 
     new->userlen = n - NSP_BUF_START;
 #ifdef NSPDEBUG
-	fprintf(stderr, "receive: type=%d seq=%d userlen=%d\n",
-		getnsptype(&new->pkt), getnspseq(&new->pkt), new->userlen);
+	fprintf(stderr, "receive: type=%d(%s) seq=%d userlen=%d\n",
+		getnsptype(&new->pkt), 
+		sPktType[getnsptype(&new->pkt)],
+		getnspseq(&new->pkt), 
+		new->userlen);
 #endif
     if (new->userlen < 0) {
 #ifdef NSPDEBUG
@@ -306,9 +307,8 @@ receive(NSP_HANDLE *h, long timeout)
 	setnsphdr(&ack, NSP_TYPE_ACK, getnspseq(&new->pkt));
 #ifdef NSPDEBUG
     {
-	// TODO: what is this : int retval =
 #endif
-	ntp_put(h->ntp, (void *) &ack, NSP_BUF_START, timeout);
+	int retval=ntp_put(h->ntp, (void *) &ack, NSP_BUF_START, timeout);
 #ifdef NSPDEBUG
 	fprintf(stderr, "receive: sent ACK for seq=%d\n",
 		getnspseq(&new->pkt));
@@ -404,8 +404,9 @@ nsp_put_rel(NSP_HANDLE *h, void *buf, unsigned count, long timeout)
 	if (t1 != t_lastxmit) {
 	    t_lastxmit = t1;
 #ifdef NSPDEBUG
-	    fprintf(stderr, "nsp_put_rel: type=%d seq=%d userlen=%d %s\n",
+	    fprintf(stderr, "nsp_put_rel: type=%d(%s) seq=%d userlen=%d %s\n",
 		    getnsptype(&pkt),
+		    sPktType[getnsptype(&pkt)],
 		    getnspseq(&pkt),
 		    count,
 		    retransmit_counter++ ? "RETRANSMIT" : "");
